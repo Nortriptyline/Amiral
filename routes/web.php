@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClubController;
+use App\Http\Controllers\CurrentClubController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,6 +33,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('clubs');
 
     Route::put('/current-club', [UserController::class, 'update_current_club'])->name('current-club.update');
+    Route::put('/club/information', [CurrentClubController::class, 'update_informations'])->name('club-information.update');
 
     Route::resource('clubs', ClubController::class)->except([
         'index',

@@ -15,7 +15,7 @@ class ClubRole extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
+        'slug', 'name',
     ];
 
     public function club()

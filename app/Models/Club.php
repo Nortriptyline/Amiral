@@ -15,7 +15,7 @@ class Club extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
+        'name'
     ];
 
     /**
@@ -23,7 +23,7 @@ class Club extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsToMany('App\Models\User')->withPivot('club_role_id');
     }
 
     public function roles()

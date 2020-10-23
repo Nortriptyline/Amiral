@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -74,5 +75,19 @@ class User extends Authenticatable
     public function clubs()
     {
         return $this->belongsToMany('App\Models\Club');
+    }
+
+    public function club_role(Club $club)
+    {
+        $data = $club->users()
+        ->where('user_id', $this->id)
+        ->first();
+
+        return ClubRole::find($data->pivot->club_role_id);
+    }
+
+    public function isClubAdmin(Club $club)
+    {
+        return $this->club_role($club)->slug === 'admin';
     }
 }

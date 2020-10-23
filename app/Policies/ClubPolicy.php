@@ -56,7 +56,7 @@ class ClubPolicy
      */
     public function update(User $user, Club $club)
     {
-        //
+        return $user->isClubAdmin($club);
     }
 
     /**

@@ -63,7 +63,6 @@
                 form: this.$inertia.form({
                     '_method': 'PUT',
                     name: this.club.name,
-                    photo: null,
                 }, {
                     bag: 'updateClubInformation',
                     resetOnSuccess: false,

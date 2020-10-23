@@ -2365,9 +2365,6 @@ __webpack_require__.r(__webpack_exports__);
     path: function path() {
       return window.location.pathname;
     }
-  },
-  mounted: function mounted() {
-    console.log(this.$page);
   }
 });
 
@@ -4286,8 +4283,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       form: this.$inertia.form({
         '_method': 'PUT',
-        name: this.club.name,
-        photo: null
+        name: this.club.name
       }, {
         bag: 'updateClubInformation',
         resetOnSuccess: false

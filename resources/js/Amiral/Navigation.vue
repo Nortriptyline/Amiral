@@ -395,10 +395,6 @@ export default {
       return window.location.pathname;
     },
   },
-
-  mounted: function () {
-    console.log(this.$page);
-  },
 };
 </script>
 
