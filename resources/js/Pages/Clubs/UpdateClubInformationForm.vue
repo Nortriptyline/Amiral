@@ -16,6 +16,11 @@
                 <jet-input-error :message="form.error('name')" class="mt-2" />
             </div>
 
+            <div class="col-span-6 sm:col-span-4">
+                <jet-label for="description" value="Description"/>
+                <amiral-textarea rows="5" class="mt-1 block w-full" v-model="form.description" autocomplete="description"></amiral-textarea>
+            </div>
+
             <!-- Email -->
             <!-- <div class="col-span-6 sm:col-span-4">
                 <jet-label for="email" value="Email" />
@@ -44,6 +49,7 @@
     import JetLabel from '@/Jetstream/Label'
     import JetActionMessage from '@/Jetstream/ActionMessage'
     import JetSecondaryButton from '@/Jetstream/SecondaryButton'
+    import AmiralTextarea from '@/Amiral/Textarea'
 
     export default {
         components: {
@@ -54,6 +60,7 @@
             JetInputError,
             JetLabel,
             JetSecondaryButton,
+            AmiralTextarea,
         },
 
         props: ['club'],
@@ -63,6 +70,7 @@
                 form: this.$inertia.form({
                     '_method': 'PUT',
                     name: this.club.name,
+                    description: this.club.description
                 }, {
                     bag: 'updateClubInformation',
                     resetOnSuccess: false,
@@ -74,36 +82,10 @@
 
         methods: {
             updateClubInformation() {
-                // if (this.$refs.photo) {
-                //     this.form.photo = this.$refs.photo.files[0]
-                // }
-
                 this.form.post(route('club-information.update'), {
                     preserveScroll: true
                 });
             },
-
-            // selectNewPhoto() {
-            //     this.$refs.photo.click();
-            // },
-
-            // updatePhotoPreview() {
-            //     const reader = new FileReader();
-
-            //     reader.onload = (e) => {
-            //         this.photoPreview = e.target.result;
-            //     };
-
-            //     reader.readAsDataURL(this.$refs.photo.files[0]);
-            // },
-
-            // deletePhoto() {
-            //     this.$inertia.delete(route('current-user-photo.destroy'), {
-            //         preserveScroll: true,
-            //     }).then(() => {
-            //         this.photoPreview = null
-            //     });
-            // },
         },
     }
 </script>

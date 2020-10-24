@@ -53,9 +53,11 @@ class ClubRepository implements ClubRepositoryInterface
         if ($user->can('update', $club)) {
             Validator::make($input, [
                 'name' => ['required', 'string', 'max:255'],
+                'description' => ['string', 'max:65535'],
             ])->validateWithBag('updateClubInformation');
 
             $club->name = $input['name'];
+            $club->description = $input['description'];
 
             $club->save();
         }

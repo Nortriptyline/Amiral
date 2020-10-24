@@ -12,6 +12,7 @@
 
                 <jet-section-border />
 
+                <club-roles-form></club-roles-form>
                 <!-- <update-password-form class="mt-10 sm:mt-0" />
 
                 <div v-if="$page.jetstream.canManageTwoFactorAuthentication">
@@ -31,11 +32,9 @@
 <script>
     import AppLayout from '@/Layouts/AppLayout'
     import AmiralHeader from '@/Amiral/Header'
-    import DeleteUserForm from './DeleteUserForm'
     import JetSectionBorder from '@/Jetstream/SectionBorder'
-    import TwoFactorAuthenticationForm from './TwoFactorAuthenticationForm'
-    import UpdatePasswordForm from './UpdatePasswordForm'
     import UpdateClubInformationForm from './UpdateClubInformationForm'
+    import ClubRolesForm from './ClubRolesForm'
 
     export default {
         props: ['sessions'],
@@ -43,11 +42,9 @@
         components: {
             AppLayout,
             AmiralHeader,
-            DeleteUserForm,
             JetSectionBorder,
-            TwoFactorAuthenticationForm,
-            UpdatePasswordForm,
             UpdateClubInformationForm,
+            ClubRolesForm,
         },
     }
 </script>
