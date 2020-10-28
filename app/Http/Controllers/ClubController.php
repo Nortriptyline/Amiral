@@ -59,7 +59,8 @@ class ClubController extends Controller
     {
 
         return Inertia::render('Clubs/Settings', [
-            'club' => $club
+            'club' => $club,
+            'users' => $club->users,
         ]);
     }
 

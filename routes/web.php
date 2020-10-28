@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClubController;
+use App\Http\Controllers\ClubRoleController;
 use App\Http\Controllers\CurrentClubController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('/current-club', [UserController::class, 'update_current_club'])->name('current-club.update');
     Route::put('/club/information', [CurrentClubController::class, 'update_informations'])->name('club-information.update');
 
+    Route::resource('clubRoles', ClubRoleController::class)->only([
+        'destroy'
+    ]);
+    
     Route::resource('clubs', ClubController::class)->except([
         'index',
     ]);

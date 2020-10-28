@@ -86,6 +86,11 @@ class User extends Authenticatable
         return ClubRole::find($data->pivot->club_role_id);
     }
 
+    public function hasClubRole(Club $club, $slug)
+    {
+        return $this->club_role($club)->slug === $slug;
+    }
+
     public function isClubAdmin(Club $club)
     {
         return $this->club_role($club)->slug === 'admin';

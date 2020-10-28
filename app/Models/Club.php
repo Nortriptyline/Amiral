@@ -18,6 +18,10 @@ class Club extends Model
         'name'
     ];
 
+    protected $with = [
+        'roles'
+    ];
+
     /**
      * Many to Many club - user
      */

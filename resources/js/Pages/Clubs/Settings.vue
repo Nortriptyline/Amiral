@@ -12,7 +12,9 @@
 
                 <jet-section-border />
 
-                <club-roles-form></club-roles-form>
+                <manage-club-role-form :roles="$page.club.roles"></manage-club-role-form>
+                <jet-section-border />
+                <!-- <club-roles-form :availableRoles="$page.club.roles" :users="$page.users"></club-roles-form> -->
                 <!-- <update-password-form class="mt-10 sm:mt-0" />
 
                 <div v-if="$page.jetstream.canManageTwoFactorAuthentication">
@@ -34,6 +36,7 @@
     import AmiralHeader from '@/Amiral/Header'
     import JetSectionBorder from '@/Jetstream/SectionBorder'
     import UpdateClubInformationForm from './UpdateClubInformationForm'
+    import ManageClubRoleForm from './ManageClubRoleForm'
     import ClubRolesForm from './ClubRolesForm'
 
     export default {
@@ -44,6 +47,7 @@
             AmiralHeader,
             JetSectionBorder,
             UpdateClubInformationForm,
+            ManageClubRoleForm,
             ClubRolesForm,
         },
     }
