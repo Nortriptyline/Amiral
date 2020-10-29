@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Club;
+use App\Models\ClubRole;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
@@ -104,5 +105,10 @@ class ClubPolicy
         ->get();
 
         return ($club->count() > 0);
+    }
+
+    public function editRoles(User $user, Club $club)
+    {
+        return $user->isClubAdmin($club);
     }
 }

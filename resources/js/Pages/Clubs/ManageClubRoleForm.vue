@@ -17,9 +17,13 @@
             <div class="ml-4">{{ role.name }}</div>
           </div>
 
+          <div class="flex items-center"></div>
+
           <div class="flex items-center">
+            <button class="ml-2 text-sm text-gray-400 underline">Edit</button>
             <!-- Remove club Member -->
             <button
+              v-if="role.slug !== 'admin'"
               class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
               @click="confirmRoleDeletion(index)"
             >
@@ -34,11 +38,12 @@
               <template #title> Delete Account </template>
 
               <template #content>
-                Are you sure you want to delete your account? Once your account
+                <!-- Are you sure you want to delete your account? Once your account
                 is deleted, all of its resources and data will be permanently
                 deleted. Please enter your password to confirm you would like to
                 permanently delete your account.
-
+                 -->
+                Are you sure you want to delete role {{ role.name }} ?
                 <div class="mt-4">
                   <jet-input
                     type="password"
@@ -128,7 +133,7 @@ export default {
           password: "",
         },
         {
-          bag: "deleteUser",
+          bag: "DeleteClubRole",
         }
       ),
     };
@@ -137,7 +142,6 @@ export default {
   methods: {
     confirmRoleDeletion(roleIndex) {
       this.form.password = "";
-
       this.confirmingRoleDeletion = true;
 
       setTimeout(() => {
@@ -146,18 +150,15 @@ export default {
     },
 
     deleteRole(role) {
-      this.form.delete(
-        this.form
-          .post(route("club-role.destroy", ['role', role]), {
-            preserveScroll: true,
-
-          })
-          .then((response) => {
-            if (!this.form.hasErrors()) {
-              this.confirmingRoleDeletion = false;
-            }
-          })
-      );
+      this.form
+        .post(route("club-roles.delete", role.id), {
+          preserveScroll: true,
+        })
+        .then((response) => {
+          if (!this.form.hasErrors()) {
+            this.confirmingRoleDeletion = false;
+          }
+        });
     },
   },
 };

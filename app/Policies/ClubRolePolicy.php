@@ -65,7 +65,7 @@ class ClubRolePolicy
      */
     public function delete(User $user, ClubRole $clubRole)
     {
-        //
+        return $user->isClubAdmin($clubRole->club);
     }
 
     /**
