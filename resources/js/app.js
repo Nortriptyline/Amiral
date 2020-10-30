@@ -6,7 +6,10 @@ import { InertiaApp } from '@inertiajs/inertia-vue';
 import { InertiaForm } from 'laravel-jetstream';
 import PortalVue from 'portal-vue';
 
+import Slugify from '@/Mixins/Slugify'
+
 Vue.mixin({ methods: { route } });
+Vue.mixin(Slugify);
 Vue.use(InertiaApp);
 Vue.use(InertiaForm);
 Vue.use(PortalVue);

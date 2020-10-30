@@ -4297,6 +4297,92 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/Clubs/CreateClubRoleForm.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Pages/Clubs/CreateClubRoleForm.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Jetstream_FormSection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Jetstream/FormSection */ "./resources/js/Jetstream/FormSection.vue");
+/* harmony import */ var _Jetstream_Label__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Jetstream/Label */ "./resources/js/Jetstream/Label.vue");
+/* harmony import */ var _Jetstream_Input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Jetstream/Input */ "./resources/js/Jetstream/Input.vue");
+/* harmony import */ var _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Jetstream/InputError */ "./resources/js/Jetstream/InputError.vue");
+/* harmony import */ var _Jetstream_Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Jetstream/Button */ "./resources/js/Jetstream/Button.vue");
+/* harmony import */ var _Jetstream_ActionMessage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/Jetstream/ActionMessage */ "./resources/js/Jetstream/ActionMessage.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    JetFormSection: _Jetstream_FormSection__WEBPACK_IMPORTED_MODULE_0__["default"],
+    JetLabel: _Jetstream_Label__WEBPACK_IMPORTED_MODULE_1__["default"],
+    JetInput: _Jetstream_Input__WEBPACK_IMPORTED_MODULE_2__["default"],
+    JetInputError: _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_3__["default"],
+    JetButton: _Jetstream_Button__WEBPACK_IMPORTED_MODULE_4__["default"],
+    JetActionMessage: _Jetstream_ActionMessage__WEBPACK_IMPORTED_MODULE_5__["default"]
+  },
+  data: function data() {
+    return {
+      form: this.$inertia.form({
+        name: ""
+      }, {
+        bag: "createClubRole",
+        resetOnSuccess: true
+      })
+    };
+  },
+  methods: {
+    createRole: function createRole() {
+      this.form.post(route("club-roles.store"), {
+        preserveScroll: true
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/Clubs/ManageClubRoleForm.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Pages/Clubs/ManageClubRoleForm.vue?vue&type=script&lang=js& ***!
@@ -4315,6 +4401,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Jetstream_DialogModal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/Jetstream/DialogModal */ "./resources/js/Jetstream/DialogModal.vue");
 /* harmony import */ var _Jetstream_SecondaryButton__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/Jetstream/SecondaryButton */ "./resources/js/Jetstream/SecondaryButton.vue");
 /* harmony import */ var _Jetstream_DangerButton__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/Jetstream/DangerButton */ "./resources/js/Jetstream/DangerButton.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4436,12 +4556,19 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       confirmingRoleDeletion: false,
+      showRoleUpdate: false,
       deleting: false,
       form: this.$inertia.form({
         _method: "DELETE",
         password: ""
       }, {
-        bag: "deleteUser"
+        bag: "DeleteClubRole"
+      }),
+      updateRoleForm: this.$inertia.form({
+        _method: "PUT",
+        name: ""
+      }, {
+        bag: "UpdateClubRole"
       })
     };
   },
@@ -4458,13 +4585,33 @@ __webpack_require__.r(__webpack_exports__);
     deleteRole: function deleteRole(role) {
       var _this2 = this;
 
-      this.form["delete"](this.form.post(route("club-role.destroy", ['role', role]), {
+      this.form.post(route("club-roles.delete", role.id), {
         preserveScroll: true
       }).then(function (response) {
         if (!_this2.form.hasErrors()) {
           _this2.confirmingRoleDeletion = false;
         }
-      }));
+      });
+    },
+    showRoleUpdateForm: function showRoleUpdateForm(role, index) {
+      var _this3 = this;
+
+      this.showRoleUpdate = true;
+      this.updateRoleForm.name = role.name;
+      setTimeout(function () {
+        _this3.$refs.name[index].focus();
+      }, 250);
+    },
+    updateRole: function updateRole(role) {
+      var _this4 = this;
+
+      this.updateRoleForm.post(route("club-roles.update", role.id), {
+        preserveScroll: true
+      }).then(function (response) {
+        if (!_this4.updateRoleForm.hasErrors()) {
+          _this4.showRoleUpdate = false;
+        }
+      });
     }
   }
 });
@@ -4484,8 +4631,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Amiral_Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Amiral/Header */ "./resources/js/Amiral/Header.vue");
 /* harmony import */ var _Jetstream_SectionBorder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Jetstream/SectionBorder */ "./resources/js/Jetstream/SectionBorder.vue");
 /* harmony import */ var _UpdateClubInformationForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./UpdateClubInformationForm */ "./resources/js/Pages/Clubs/UpdateClubInformationForm.vue");
-/* harmony import */ var _ManageClubRoleForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ManageClubRoleForm */ "./resources/js/Pages/Clubs/ManageClubRoleForm.vue");
-/* harmony import */ var _ClubRolesForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ClubRolesForm */ "./resources/js/Pages/Clubs/ClubRolesForm.vue");
+/* harmony import */ var _CreateClubRoleForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CreateClubRoleForm */ "./resources/js/Pages/Clubs/CreateClubRoleForm.vue");
+/* harmony import */ var _ManageClubRoleForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ManageClubRoleForm */ "./resources/js/Pages/Clubs/ManageClubRoleForm.vue");
+/* harmony import */ var _ClubRolesForm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ClubRolesForm */ "./resources/js/Pages/Clubs/ClubRolesForm.vue");
 //
 //
 //
@@ -4519,6 +4667,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -4526,14 +4681,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['sessions'],
+  props: ["sessions"],
   components: {
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
     AmiralHeader: _Amiral_Header__WEBPACK_IMPORTED_MODULE_1__["default"],
     JetSectionBorder: _Jetstream_SectionBorder__WEBPACK_IMPORTED_MODULE_2__["default"],
     UpdateClubInformationForm: _UpdateClubInformationForm__WEBPACK_IMPORTED_MODULE_3__["default"],
-    ManageClubRoleForm: _ManageClubRoleForm__WEBPACK_IMPORTED_MODULE_4__["default"],
-    ClubRolesForm: _ClubRolesForm__WEBPACK_IMPORTED_MODULE_5__["default"]
+    CreateClubRoleForm: _CreateClubRoleForm__WEBPACK_IMPORTED_MODULE_4__["default"],
+    ManageClubRoleForm: _ManageClubRoleForm__WEBPACK_IMPORTED_MODULE_5__["default"],
+    ClubRolesForm: _ClubRolesForm__WEBPACK_IMPORTED_MODULE_6__["default"]
   }
 });
 
@@ -28276,6 +28432,110 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/Clubs/CreateClubRoleForm.vue?vue&type=template&id=f9abfa32&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Pages/Clubs/CreateClubRoleForm.vue?vue&type=template&id=f9abfa32& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("jet-form-section", {
+    on: { submitted: _vm.createRole },
+    scopedSlots: _vm._u([
+      {
+        key: "title",
+        fn: function() {
+          return [_vm._v(" Create Role ")]
+        },
+        proxy: true
+      },
+      {
+        key: "description",
+        fn: function() {
+          return [_vm._v(" Create a new Role for your Club. ")]
+        },
+        proxy: true
+      },
+      {
+        key: "form",
+        fn: function() {
+          return [
+            _c(
+              "div",
+              { staticClass: "col-span-6 sm:col-span-4" },
+              [
+                _c("jet-label", { attrs: { for: "name", value: "Role Name" } }),
+                _vm._v(" "),
+                _c("jet-input", {
+                  staticClass: "mt-1 block w-full",
+                  attrs: {
+                    id: "RoleName",
+                    type: "text",
+                    autocomplete: "roleName"
+                  },
+                  model: {
+                    value: _vm.form.name,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "name", $$v)
+                    },
+                    expression: "form.name"
+                  }
+                }),
+                _vm._v(" "),
+                _c("jet-input-error", {
+                  staticClass: "mt-2",
+                  attrs: { message: _vm.form.error("name") }
+                })
+              ],
+              1
+            )
+          ]
+        },
+        proxy: true
+      },
+      {
+        key: "actions",
+        fn: function() {
+          return [
+            _c(
+              "jet-action-message",
+              {
+                staticClass: "mr-3",
+                attrs: { on: _vm.form.recentlySuccessful }
+              },
+              [_vm._v("\n      Saved.\n    ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "jet-button",
+              {
+                class: { "opacity-25": _vm.form.processing },
+                attrs: { disabled: _vm.form.processing }
+              },
+              [_vm._v("\n      Save\n    ")]
+            )
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/Clubs/ManageClubRoleForm.vue?vue&type=template&id=17830d50&":
 /*!**********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Pages/Clubs/ManageClubRoleForm.vue?vue&type=template&id=17830d50& ***!
@@ -28331,6 +28591,8 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
+                    _c("div", { staticClass: "flex items-center" }),
+                    _vm._v(" "),
                     _c(
                       "div",
                       { staticClass: "flex items-center" },
@@ -28338,16 +28600,31 @@ var render = function() {
                         _c(
                           "button",
                           {
-                            staticClass:
-                              "cursor-pointer ml-6 text-sm text-red-500 focus:outline-none",
+                            staticClass: "ml-2 text-sm text-gray-400 underline",
                             on: {
                               click: function($event) {
-                                return _vm.confirmRoleDeletion(index)
+                                return _vm.showRoleUpdateForm(role, index)
                               }
                             }
                           },
-                          [_vm._v("\n            Remove\n          ")]
+                          [_vm._v("\n            Edit\n          ")]
                         ),
+                        _vm._v(" "),
+                        role.slug !== "admin"
+                          ? _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "cursor-pointer ml-6 text-sm text-red-500 focus:outline-none",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.confirmRoleDeletion(index)
+                                  }
+                                }
+                              },
+                              [_vm._v("\n            Remove\n          ")]
+                            )
+                          : _vm._e(),
                         _vm._v(" "),
                         _c("jet-dialog-modal", {
                           attrs: { show: _vm.confirmingRoleDeletion },
@@ -28361,7 +28638,7 @@ var render = function() {
                               {
                                 key: "title",
                                 fn: function() {
-                                  return [_vm._v(" Delete Account ")]
+                                  return [_vm._v(" Delete Role ")]
                                 },
                                 proxy: true
                               },
@@ -28370,7 +28647,9 @@ var render = function() {
                                 fn: function() {
                                   return [
                                     _vm._v(
-                                      "\n              Are you sure you want to delete your account? Once your account\n              is deleted, all of its resources and data will be permanently\n              deleted. Please enter your password to confirm you would like to\n              permanently delete your account.\n\n              "
+                                      "\n              Are you sure you want to delete role " +
+                                        _vm._s(role.name) +
+                                        " ? Once this\n              role is deleted, you will have to attribute new roles to users\n              using this one. Please enter your password to confirm you would\n              like to permanently delete your accout.\n              "
                                     ),
                                     _c(
                                       "div",
@@ -28459,13 +28738,156 @@ var render = function() {
                                         },
                                         nativeOn: {
                                           click: function($event) {
-                                            return _vm.deleteRole($event)
+                                            return _vm.deleteRole(role)
                                           }
                                         }
                                       },
                                       [
                                         _vm._v(
-                                          "\n                Delete Account\n              "
+                                          "\n                Delete Role\n              "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                },
+                                proxy: true
+                              }
+                            ],
+                            null,
+                            true
+                          )
+                        }),
+                        _vm._v(" "),
+                        _c("jet-dialog-modal", {
+                          attrs: { show: _vm.showRoleUpdate },
+                          on: {
+                            close: function($event) {
+                              _vm.showRoleUpdate = false
+                            }
+                          },
+                          scopedSlots: _vm._u(
+                            [
+                              {
+                                key: "title",
+                                fn: function() {
+                                  return [
+                                    _vm._v(
+                                      " Edit Role : " +
+                                        _vm._s(_vm.updateRoleForm.name)
+                                    )
+                                  ]
+                                },
+                                proxy: true
+                              },
+                              {
+                                key: "content",
+                                fn: function() {
+                                  return [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass: "col-span-6 sm:col-span-3"
+                                      },
+                                      [
+                                        _c("jet-label", {
+                                          attrs: {
+                                            for: "name",
+                                            value: "Role Name"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("jet-input", {
+                                          ref: "name",
+                                          refInFor: true,
+                                          staticClass: "mt-1 block w-full",
+                                          attrs: {
+                                            type: "text",
+                                            autocomplete: "name"
+                                          },
+                                          nativeOn: {
+                                            keyup: function($event) {
+                                              if (
+                                                !$event.type.indexOf("key") &&
+                                                _vm._k(
+                                                  $event.keyCode,
+                                                  "enter",
+                                                  13,
+                                                  $event.key,
+                                                  "Enter"
+                                                )
+                                              ) {
+                                                return null
+                                              }
+                                              return _vm.updateRole(role)
+                                            }
+                                          },
+                                          model: {
+                                            value: _vm.updateRoleForm.name,
+                                            callback: function($$v) {
+                                              _vm.$set(
+                                                _vm.updateRoleForm,
+                                                "name",
+                                                $$v
+                                              )
+                                            },
+                                            expression: "updateRoleForm.name"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("jet-input-error", {
+                                          staticClass: "mt-2",
+                                          attrs: {
+                                            message: _vm.updateRoleForm.error(
+                                              "name"
+                                            )
+                                          }
+                                        })
+                                      ],
+                                      1
+                                    )
+                                  ]
+                                },
+                                proxy: true
+                              },
+                              {
+                                key: "footer",
+                                fn: function() {
+                                  return [
+                                    _c(
+                                      "jet-secondary-button",
+                                      {
+                                        nativeOn: {
+                                          click: function($event) {
+                                            _vm.showRoleUpdate = false
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                Nevermind\n              "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "jet-button",
+                                      {
+                                        staticClass: "ml-2",
+                                        class: {
+                                          "opacity-25": _vm.form.processing
+                                        },
+                                        attrs: {
+                                          disabled: _vm.form.processing
+                                        },
+                                        nativeOn: {
+                                          click: function($event) {
+                                            return _vm.updateRole(role)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                Update Role\n              "
                                         )
                                       ]
                                     )
@@ -28524,9 +28946,7 @@ var render = function() {
           fn: function() {
             return [
               _c("amiral-header", [
-                _vm._v(
-                  "\n            " + _vm._s(_vm.$page.club.name) + "\n        "
-                )
+                _vm._v("\n      " + _vm._s(_vm.$page.club.name) + "\n    ")
               ])
             ]
           },
@@ -28544,6 +28964,10 @@ var render = function() {
             _c("update-club-information-form", {
               attrs: { club: _vm.$page.club }
             }),
+            _vm._v(" "),
+            _c("jet-section-border"),
+            _vm._v(" "),
+            _c("create-club-role-form"),
             _vm._v(" "),
             _c("jet-section-border"),
             _vm._v(" "),
@@ -43965,6 +44389,36 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/Mixins/Slugify.js":
+/*!****************************************!*\
+  !*** ./resources/js/Mixins/Slugify.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    slugify: function slugify(string) {
+      var a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
+      var b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------';
+      var p = new RegExp(a.split('').join('|'), 'g');
+      return string.toString().toLowerCase().replace(/\s+/g, '-') // Replace spaces with -
+      .replace(p, function (c) {
+        return b.charAt(a.indexOf(c));
+      }) // Replace special characters
+      .replace(/&/g, '-and-') // Replace & with 'and'
+      .replace(/[^\w\-]+/g, '') // Remove all non-word characters
+      .replace(/\-\-+/g, '-') // Replace multiple - with single -
+      .replace(/^-+/, '') // Trim - from start of text
+      .replace(/-+$/, ''); // Trim - from end of text
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/Pages sync recursive ^\\.\\/.*$":
 /*!******************************************!*\
   !*** ./resources/js/Pages sync ^\.\/.*$ ***!
@@ -43985,6 +44439,8 @@ var map = {
 	"./Clubs/Create.vue": "./resources/js/Pages/Clubs/Create.vue",
 	"./Clubs/CreateClubForm": "./resources/js/Pages/Clubs/CreateClubForm.vue",
 	"./Clubs/CreateClubForm.vue": "./resources/js/Pages/Clubs/CreateClubForm.vue",
+	"./Clubs/CreateClubRoleForm": "./resources/js/Pages/Clubs/CreateClubRoleForm.vue",
+	"./Clubs/CreateClubRoleForm.vue": "./resources/js/Pages/Clubs/CreateClubRoleForm.vue",
 	"./Clubs/ManageClubRoleForm": "./resources/js/Pages/Clubs/ManageClubRoleForm.vue",
 	"./Clubs/ManageClubRoleForm.vue": "./resources/js/Pages/Clubs/ManageClubRoleForm.vue",
 	"./Clubs/Settings": "./resources/js/Pages/Clubs/Settings.vue",
@@ -44438,6 +44894,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateClubForm_vue_vue_type_template_id_c57a925e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateClubForm_vue_vue_type_template_id_c57a925e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Clubs/CreateClubRoleForm.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/Pages/Clubs/CreateClubRoleForm.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CreateClubRoleForm_vue_vue_type_template_id_f9abfa32___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateClubRoleForm.vue?vue&type=template&id=f9abfa32& */ "./resources/js/Pages/Clubs/CreateClubRoleForm.vue?vue&type=template&id=f9abfa32&");
+/* harmony import */ var _CreateClubRoleForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateClubRoleForm.vue?vue&type=script&lang=js& */ "./resources/js/Pages/Clubs/CreateClubRoleForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CreateClubRoleForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CreateClubRoleForm_vue_vue_type_template_id_f9abfa32___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CreateClubRoleForm_vue_vue_type_template_id_f9abfa32___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/Pages/Clubs/CreateClubRoleForm.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Clubs/CreateClubRoleForm.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/Pages/Clubs/CreateClubRoleForm.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateClubRoleForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateClubRoleForm.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/Clubs/CreateClubRoleForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateClubRoleForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Clubs/CreateClubRoleForm.vue?vue&type=template&id=f9abfa32&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/Pages/Clubs/CreateClubRoleForm.vue?vue&type=template&id=f9abfa32& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateClubRoleForm_vue_vue_type_template_id_f9abfa32___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateClubRoleForm.vue?vue&type=template&id=f9abfa32& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/Clubs/CreateClubRoleForm.vue?vue&type=template&id=f9abfa32&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateClubRoleForm_vue_vue_type_template_id_f9abfa32___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateClubRoleForm_vue_vue_type_template_id_f9abfa32___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -45150,7 +45675,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var laravel_jetstream__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(laravel_jetstream__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var portal_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! portal-vue */ "./node_modules/portal-vue/dist/portal-vue.common.js");
 /* harmony import */ var portal_vue__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(portal_vue__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _Mixins_Slugify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Mixins/Slugify */ "./resources/js/Mixins/Slugify.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 
 
 
@@ -45161,6 +45688,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.mixin({
     route: route
   }
 });
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.mixin(_Mixins_Slugify__WEBPACK_IMPORTED_MODULE_4__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(_inertiajs_inertia_vue__WEBPACK_IMPORTED_MODULE_1__["InertiaApp"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(laravel_jetstream__WEBPACK_IMPORTED_MODULE_2__["InertiaForm"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(portal_vue__WEBPACK_IMPORTED_MODULE_3___default.a);
