@@ -31,6 +31,26 @@ class ClubRoleController extends Controller
         return back();
     }
 
+    /**
+     * Update an existing clubrole Name
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  App\Models\ClubRole $role
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, ClubRole $role)
+    {
+        $this->roles->update($request->user(), $role, $request->all());
+        return back();
+    }
+
+
+    /**
+     * Delete an existing resource in storage
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function delete(Request $request, ClubRole $role)
     {
         if (!Hash::check($request->password, $request->user()->password)) {

@@ -7,13 +7,14 @@ use App\Repositories\ClubRoleRepositoryInterface;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Club;
 use App\Models\ClubRole;
+use App\Rules\UniqueInClub;
+use App\Validations\ClubRoleValidation;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-
 
 class ClubRoleRepository implements ClubRoleRepositoryInterface
 {
+    use ClubRoleValidation;
+
     private $users;
 
     public function __construct(UserRepository $users)
@@ -29,26 +30,51 @@ class ClubRoleRepository implements ClubRoleRepositoryInterface
      */
     public function create($user, Club $club, array $input)
     {
-        // /!\ Check if role name and slug exists only for this club. Not all clubs
+
         if ($user->can('editRoles', $club)) {
+            $input['name'] = Str::ucfirst($input['name']);
+
             Validator::make($input, [
-                'name' => ['required', 'string', 'max:255'],
-                'slug' => ['required', 'alpha_dash', 'unique:club_roles,slug'],
+                'name' => $this->clubRules($club),
             ])->validateWithBag('createClubRole');
-            
+
+            $slug = Str::of($input['name'])->slug('-');
+            $slug = !$club->slug_exists($slug)
+                ? $slug
+                : Str::uuid();
+
+
             $role = $club->roles()->create([
                 'name' => $input['name'],
-                'slug' => $input['slug'],
+                'slug' => $slug,
             ]);
 
             return $role;
         }
     }
 
+    /**
+     * 
+     */
+    public function update($user, ClubRole $role, array $input)
+    {
+        $input['name'] = Str::ucfirst($input['name']);
+        $club = $role->club()->first();
+
+        Validator::make($input, [
+            'name' => $this->clubRules($club),
+        ])->validateWithBag('UpdateClubRole');
+
+        $role->name = $input['name'];
+        $role->save();
+
+        return $role;
+    }
+
     public function delete($user, ClubRole $role)
     {
         if ($user->can('delete', $role)) {
-            
+
             // Can not delete administrator role
             if ($role->slug === 'admin') {
                 abort(403, 'This role deletion is not allowed.');

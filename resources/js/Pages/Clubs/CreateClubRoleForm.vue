@@ -6,7 +6,7 @@
 
     <template #form>
       <!-- Role name -->
-      <div class="col-span-6 sm:col-span-3">
+      <div class="col-span-6 sm:col-span-4">
         <jet-label for="name" value="Role Name" />
         <jet-input
           id="RoleName"
@@ -16,20 +16,6 @@
           autocomplete="roleName"
         />
         <jet-input-error :message="form.error('name')" class="mt-2" />
-      </div>
-
-      <!-- Role Slug -->
-      <div class="col-span-6 sm:col-span-3">
-        <jet-label for="slug" value="Slug" />
-        <jet-input
-          id="RoleSlug"
-          type="text"
-          class="mt-1 block w-full text-gray-500 bg-gray-100"
-          v-model="slug"
-          autocomplete="roleSlug"
-          disabled
-        />
-        <jet-input-error :message="form.error('slug')" class="mt-2" />
       </div>
     </template>
 
@@ -55,8 +41,6 @@ import JetInputError from "@/Jetstream/InputError";
 import JetButton from "@/Jetstream/Button";
 import JetActionMessage from "@/Jetstream/ActionMessage";
 
-var slugify = require('slugify');
-
 export default {
   components: {
     JetFormSection,
@@ -72,7 +56,6 @@ export default {
       form: this.$inertia.form(
         {
           name: "",
-          slug: "",
         },
         {
           bag: "createClubRole",
@@ -80,11 +63,6 @@ export default {
         }
       ),
     };
-  },
-  computed: {
-    slug: function() {
-      return this.form.slug = slugify(this.form.name)
-    }
   },
 
   methods: {

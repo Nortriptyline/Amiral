@@ -16,7 +16,7 @@ class CreateClubRolesTable extends Migration
         Schema::create('club_roles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('club_id');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->string('name');
             $table->timestamps();
         });

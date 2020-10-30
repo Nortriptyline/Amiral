@@ -37,8 +37,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('/club/information', [CurrentClubController::class, 'update_informations'])->name('club-information.update');
 
     Route::post('/club-roles', [ClubRoleController::class, 'store'])->name('club-roles.store');
+    Route::put('/club-roles/{role}', [ClubRoleController::class, 'update'])->name('club-roles.update');
     Route::delete('/club-roles/{role}', [ClubRoleController::class, 'delete'])->name('club-roles.delete');
-    
+
     Route::resource('clubs', ClubController::class)->except([
         'index',
     ]);

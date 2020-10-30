@@ -34,4 +34,9 @@ class Club extends Model
     {
         return $this->hasMany('App\Models\ClubRole');
     }
+
+    public function slug_exists($value)
+    {
+        return $this->roles()->where('slug', $value)->count() > 0;
+    }
 }
