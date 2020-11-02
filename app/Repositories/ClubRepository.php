@@ -6,6 +6,7 @@ use App\Repositories\ClubRepositoryInterface;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Club;
+use App\Models\ClubRole;
 use App\Models\User;
 use App\Rules\ExistsInClub;
 use App\Rules\UniqueInClub;
@@ -36,7 +37,7 @@ class ClubRepository implements ClubRepositoryInterface
             $club = Club::create([
                 'name' => $input['name'],
             ]);
-            
+
             $role = $club->roles()->create([
                 'slug' => 'admin',
                 'name' => 'Administrator',
@@ -54,6 +55,7 @@ class ClubRepository implements ClubRepositoryInterface
 
         if ($user->can('update', $club)) {
 
+
             Validator::make($input, [
                 'email' => ['required', 'email', 'exists:users,email', new UniqueInClub([
                     'club' => $club,
@@ -66,7 +68,10 @@ class ClubRepository implements ClubRepositoryInterface
                 ])],
             ])->validateWithBag('addClubMember');
 
-            return $club->users()->attach($input['role']);
+            $summoned = User::where('email', $input['email'])->firstOrFail();
+            $role = ClubRole::find($input['role']);
+
+            return $club->inviteUser($summoned, $role);
         }
     }
 

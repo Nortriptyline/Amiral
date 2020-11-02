@@ -4149,11 +4149,6 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function () {
         _this2.clubMemberBeingRemoved = null;
       });
-    },
-    displayableRole: function displayableRole(role) {
-      return this.availableRoles.find(function (r) {
-        return r.key == role;
-      }).name;
     }
   }
 });
@@ -28336,9 +28331,7 @@ var render = function() {
                                         [
                                           _vm._v(
                                             "\n                " +
-                                              _vm._s(
-                                                _vm.displayableRole(user.role)
-                                              ) +
+                                              _vm._s(user.role.name) +
                                               "\n              "
                                           )
                                         ]
@@ -28395,7 +28388,7 @@ var render = function() {
                   ],
                   null,
                   false,
-                  4076002847
+                  2860871795
                 )
               })
             ],

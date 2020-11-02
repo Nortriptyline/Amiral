@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -58,6 +59,7 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'role',
     ];
 
     /**
@@ -66,7 +68,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $with = [
-        'clubs'
+        'clubs',
     ];
 
     /**
@@ -96,8 +98,16 @@ class User extends Authenticatable
         return $this->club_role($club)->slug === 'admin';
     }
 
-    public function role()
+    public function club_invitations()
     {
-        return $this->club_role($this->current_club_id);
+        return $this->belongsToMany('App\Models\Club', 'club_user_invitations');
+    }
+
+    public function getRoleAttribute()
+    {
+        $active_user = Auth::user();
+        $club = Club::find($active_user->current_club_id);
+
+        return $this->club_role($club);
     }
 }

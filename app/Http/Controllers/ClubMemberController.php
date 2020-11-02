@@ -20,5 +20,7 @@ class ClubMemberController extends Controller
     public function store(Request $request, Club $club)
     {
         $this->clubs->add_member($club, $request->all());
+
+        return back();
     }
 }

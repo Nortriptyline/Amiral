@@ -19,7 +19,7 @@ class Club extends Model
     ];
 
     protected $with = [
-        'roles'
+        'roles',
     ];
 
     /**
@@ -38,5 +38,10 @@ class Club extends Model
     public function slug_exists($value)
     {
         return $this->roles()->where('slug', $value)->count() > 0;
+    }
+
+    public function inviteUser(User $user, ClubRole $role)
+    {
+        return $this->users()->attach($user, ['club_role_id' => $role->id]);
     }
 }

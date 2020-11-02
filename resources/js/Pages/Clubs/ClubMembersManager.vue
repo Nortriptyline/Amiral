@@ -146,7 +146,7 @@
                   class="ml-2 text-sm text-gray-400 underline"
                   @click="manageRole(user)"
                 >
-                  {{ displayableRole(user.role) }}
+                  {{ user.role.name }}
                 </button>
 
                 <!-- Leave Team -->
@@ -436,10 +436,6 @@ export default {
         .then(() => {
           this.clubMemberBeingRemoved = null;
         });
-    },
-
-    displayableRole(role) {
-      return this.availableRoles.find((r) => r.key == role).name;
     },
   },
 };
