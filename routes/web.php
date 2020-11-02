@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClubController;
+use App\Http\Controllers\ClubMemberController;
 use App\Http\Controllers\ClubRoleController;
 use App\Http\Controllers\CurrentClubController;
 use App\Http\Controllers\UserController;
@@ -39,6 +40,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/club-roles', [ClubRoleController::class, 'store'])->name('club-roles.store');
     Route::put('/club-roles/{role}', [ClubRoleController::class, 'update'])->name('club-roles.update');
     Route::delete('/club-roles/{role}', [ClubRoleController::class, 'delete'])->name('club-roles.delete');
+
+    Route::post('/club/{club}/members', [ClubMemberController::class, 'store'])->name('club-members.store');
 
     Route::resource('clubs', ClubController::class)->except([
         'index',

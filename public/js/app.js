@@ -2325,6 +2325,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -3725,6 +3727,439 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/Clubs/ClubMembersManager.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Pages/Clubs/ClubMembersManager.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Jetstream_ActionMessage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Jetstream/ActionMessage */ "./resources/js/Jetstream/ActionMessage.vue");
+/* harmony import */ var _Jetstream_ActionSection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Jetstream/ActionSection */ "./resources/js/Jetstream/ActionSection.vue");
+/* harmony import */ var _Jetstream_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Jetstream/Button */ "./resources/js/Jetstream/Button.vue");
+/* harmony import */ var _Jetstream_ConfirmationModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Jetstream/ConfirmationModal */ "./resources/js/Jetstream/ConfirmationModal.vue");
+/* harmony import */ var _Jetstream_DangerButton__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Jetstream/DangerButton */ "./resources/js/Jetstream/DangerButton.vue");
+/* harmony import */ var _Jetstream_DialogModal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/Jetstream/DialogModal */ "./resources/js/Jetstream/DialogModal.vue");
+/* harmony import */ var _Jetstream_FormSection__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/Jetstream/FormSection */ "./resources/js/Jetstream/FormSection.vue");
+/* harmony import */ var _Jetstream_Input__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/Jetstream/Input */ "./resources/js/Jetstream/Input.vue");
+/* harmony import */ var _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/Jetstream/InputError */ "./resources/js/Jetstream/InputError.vue");
+/* harmony import */ var _Jetstream_Label__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/Jetstream/Label */ "./resources/js/Jetstream/Label.vue");
+/* harmony import */ var _Jetstream_SecondaryButton__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/Jetstream/SecondaryButton */ "./resources/js/Jetstream/SecondaryButton.vue");
+/* harmony import */ var _Jetstream_SectionBorder__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/Jetstream/SectionBorder */ "./resources/js/Jetstream/SectionBorder.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    JetActionMessage: _Jetstream_ActionMessage__WEBPACK_IMPORTED_MODULE_0__["default"],
+    JetActionSection: _Jetstream_ActionSection__WEBPACK_IMPORTED_MODULE_1__["default"],
+    JetButton: _Jetstream_Button__WEBPACK_IMPORTED_MODULE_2__["default"],
+    JetConfirmationModal: _Jetstream_ConfirmationModal__WEBPACK_IMPORTED_MODULE_3__["default"],
+    JetDangerButton: _Jetstream_DangerButton__WEBPACK_IMPORTED_MODULE_4__["default"],
+    JetDialogModal: _Jetstream_DialogModal__WEBPACK_IMPORTED_MODULE_5__["default"],
+    JetFormSection: _Jetstream_FormSection__WEBPACK_IMPORTED_MODULE_6__["default"],
+    JetInput: _Jetstream_Input__WEBPACK_IMPORTED_MODULE_7__["default"],
+    JetInputError: _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_8__["default"],
+    JetLabel: _Jetstream_Label__WEBPACK_IMPORTED_MODULE_9__["default"],
+    JetSecondaryButton: _Jetstream_SecondaryButton__WEBPACK_IMPORTED_MODULE_10__["default"],
+    JetSectionBorder: _Jetstream_SectionBorder__WEBPACK_IMPORTED_MODULE_11__["default"]
+  },
+  props: ["club", "availableRoles"],
+  data: function data() {
+    return {
+      addClubMemberForm: this.$inertia.form({
+        email: "",
+        role: null
+      }, {
+        bag: "addClubMember",
+        resetOnSuccess: true
+      }),
+      updateRoleForm: this.$inertia.form({
+        role: null
+      }, {
+        bag: "updateRole",
+        resetOnSuccess: false
+      }),
+      leaveClubForm: this.$inertia.form({//
+      }, {
+        bag: "leaveClub"
+      }),
+      removeClubMemberForm: this.$inertia.form({//
+      }, {
+        bag: "removeClubMember"
+      }),
+      currentlyManagingRole: false,
+      managingRoleFor: null,
+      confirmingLeavingClub: false,
+      clubMemberBeingRemoved: null
+    };
+  },
+  methods: {
+    addClubMember: function addClubMember() {
+      this.addClubMemberForm.post(route("club-members.store", this.club), {
+        preserveScroll: true
+      });
+    },
+    manageRole: function manageRole(clubMember) {
+      this.managingRoleFor = clubMember;
+      this.updateRoleForm.role = clubMember.role;
+      this.currentlyManagingRole = true;
+    },
+    updateRole: function updateRole() {
+      var _this = this;
+
+      this.updateRoleForm.put(route("team-members.update", [this.team, this.managingRoleFor]), {
+        preserveScroll: true
+      }).then(function () {
+        _this.currentlyManagingRole = false;
+      });
+    },
+    confirmLeavingClub: function confirmLeavingClub() {
+      this.confirmingLeavingClub = true;
+    },
+    leaveClub: function leaveClub() {
+      this.leaveClubForm["delete"](route("team-members.destroy", [this.team, this.$page.user]));
+    },
+    confirmClubMemberRemoval: function confirmClubMemberRemoval(clubMember) {
+      this.clubMemberBeingRemoved = clubMember;
+    },
+    removeClubMember: function removeClubMember() {
+      var _this2 = this;
+
+      this.removeClubMemberForm["delete"](route("team-members.destroy", [this.team, this.clubMemberBeingRemoved]), {
+        preserveScroll: true,
+        preserveState: true
+      }).then(function () {
+        _this2.clubMemberBeingRemoved = null;
+      });
+    },
+    displayableRole: function displayableRole(role) {
+      return this.availableRoles.find(function (r) {
+        return r.key == role;
+      }).name;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/Clubs/ClubRolesForm.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Pages/Clubs/ClubRolesForm.vue?vue&type=script&lang=js& ***!
@@ -4557,6 +4992,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       confirmingRoleDeletion: false,
       showRoleUpdate: false,
+      manipulatedRole: false,
       deleting: false,
       form: this.$inertia.form({
         _method: "DELETE",
@@ -4582,10 +5018,10 @@ __webpack_require__.r(__webpack_exports__);
         _this.$refs.password[roleIndex].focus();
       }, 250);
     },
-    deleteRole: function deleteRole(role) {
+    deleteRole: function deleteRole() {
       var _this2 = this;
 
-      this.form.post(route("club-roles.delete", role.id), {
+      this.form.post(route("club-roles.delete", this.manipulatedRole), {
         preserveScroll: true
       }).then(function (response) {
         if (!_this2.form.hasErrors()) {
@@ -4597,15 +5033,16 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.showRoleUpdate = true;
+      this.manipulatedRole = role;
       this.updateRoleForm.name = role.name;
       setTimeout(function () {
         _this3.$refs.name[index].focus();
       }, 250);
     },
-    updateRole: function updateRole(role) {
+    updateRole: function updateRole() {
       var _this4 = this;
 
-      this.updateRoleForm.post(route("club-roles.update", role.id), {
+      this.updateRoleForm.post(route("club-roles.update", this.manipulatedRole.id), {
         preserveScroll: true
       }).then(function (response) {
         if (!_this4.updateRoleForm.hasErrors()) {
@@ -4634,6 +5071,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CreateClubRoleForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CreateClubRoleForm */ "./resources/js/Pages/Clubs/CreateClubRoleForm.vue");
 /* harmony import */ var _ManageClubRoleForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ManageClubRoleForm */ "./resources/js/Pages/Clubs/ManageClubRoleForm.vue");
 /* harmony import */ var _ClubRolesForm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ClubRolesForm */ "./resources/js/Pages/Clubs/ClubRolesForm.vue");
+/* harmony import */ var _ClubMembersManager__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ClubMembersManager */ "./resources/js/Pages/Clubs/ClubMembersManager.vue");
 //
 //
 //
@@ -4673,6 +5111,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -4689,7 +5134,8 @@ __webpack_require__.r(__webpack_exports__);
     UpdateClubInformationForm: _UpdateClubInformationForm__WEBPACK_IMPORTED_MODULE_3__["default"],
     CreateClubRoleForm: _CreateClubRoleForm__WEBPACK_IMPORTED_MODULE_4__["default"],
     ManageClubRoleForm: _ManageClubRoleForm__WEBPACK_IMPORTED_MODULE_5__["default"],
-    ClubRolesForm: _ClubRolesForm__WEBPACK_IMPORTED_MODULE_6__["default"]
+    ClubRolesForm: _ClubRolesForm__WEBPACK_IMPORTED_MODULE_6__["default"],
+    ClubMembersManager: _ClubMembersManager__WEBPACK_IMPORTED_MODULE_7__["default"]
   }
 });
 
@@ -24665,66 +25111,84 @@ var render = function() {
                           ]
                         ),
                         _vm._v(" "),
-                        _c("amiral-dropdown-title", [_vm._v(" Switch Clubs ")]),
-                        _vm._v(" "),
-                        _vm._l(_vm.$page.user.clubs, function(club) {
-                          return [
-                            _c(
-                              "form",
-                              {
-                                on: {
-                                  submit: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.switchToClub(club)
-                                  }
-                                }
-                              },
+                        _vm.$page.user.clubs.length > 0
+                          ? _c(
+                              "div",
                               [
-                                _c(
-                                  "jet-dropdown-link",
-                                  { attrs: { as: "button" } },
-                                  [
+                                _c("amiral-dropdown-title", [
+                                  _vm._v(" Switch Clubs ")
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.$page.user.clubs, function(club) {
+                                  return [
                                     _c(
-                                      "div",
-                                      { staticClass: "flex items-center" },
+                                      "form",
+                                      {
+                                        key: club.id,
+                                        on: {
+                                          submit: function($event) {
+                                            $event.preventDefault()
+                                            return _vm.switchToClub(club)
+                                          }
+                                        }
+                                      },
                                       [
-                                        club.id ==
-                                        _vm.$page.user.current_club_id
-                                          ? _c(
-                                              "svg",
+                                        _c(
+                                          "jet-dropdown-link",
+                                          { attrs: { as: "button" } },
+                                          [
+                                            _c(
+                                              "div",
                                               {
-                                                staticClass:
-                                                  "mr-2 h-5 w-5 text-green-400",
-                                                attrs: {
-                                                  fill: "none",
-                                                  "stroke-linecap": "round",
-                                                  "stroke-linejoin": "round",
-                                                  "stroke-width": "2",
-                                                  stroke: "currentColor",
-                                                  viewBox: "0 0 24 24"
-                                                }
+                                                staticClass: "flex items-center"
                                               },
                                               [
-                                                _c("path", {
-                                                  attrs: {
-                                                    d:
-                                                      "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                  }
-                                                })
+                                                club.id ==
+                                                _vm.$page.user.current_club_id
+                                                  ? _c(
+                                                      "svg",
+                                                      {
+                                                        staticClass:
+                                                          "mr-2 h-5 w-5 text-green-400",
+                                                        attrs: {
+                                                          fill: "none",
+                                                          "stroke-linecap":
+                                                            "round",
+                                                          "stroke-linejoin":
+                                                            "round",
+                                                          "stroke-width": "2",
+                                                          stroke:
+                                                            "currentColor",
+                                                          viewBox: "0 0 24 24"
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("path", {
+                                                          attrs: {
+                                                            d:
+                                                              "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                          }
+                                                        })
+                                                      ]
+                                                    )
+                                                  : _vm._e(),
+                                                _vm._v(" "),
+                                                _c("div", [
+                                                  _vm._v(_vm._s(club.name))
+                                                ])
                                               ]
                                             )
-                                          : _vm._e(),
-                                        _vm._v(" "),
-                                        _c("div", [_vm._v(_vm._s(club.name))])
-                                      ]
+                                          ]
+                                        )
+                                      ],
+                                      1
                                     )
                                   ]
-                                )
+                                })
                               ],
-                              1
+                              2
                             )
-                          ]
-                        }),
+                          : _vm._e(),
                         _vm._v(" "),
                         _c("div", { staticClass: "border-t border-gray-100" }),
                         _vm._v(" "),
@@ -27556,6 +28020,677 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/Clubs/ClubMembersManager.vue?vue&type=template&id=0582cb76&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Pages/Clubs/ClubMembersManager.vue?vue&type=template&id=0582cb76& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("jet-section-border"),
+      _vm._v(" "),
+      _c("jet-form-section", {
+        on: { submitted: _vm.addClubMember },
+        scopedSlots: _vm._u([
+          {
+            key: "title",
+            fn: function() {
+              return [_vm._v(" Add Team Member ")]
+            },
+            proxy: true
+          },
+          {
+            key: "description",
+            fn: function() {
+              return [
+                _vm._v(
+                  "\n      Add a new team member to your team, allowing them to collaborate with\n      you.\n    "
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "form",
+            fn: function() {
+              return [
+                _c("div", { staticClass: "col-span-6" }, [
+                  _c("div", { staticClass: "max-w-xl text-sm text-gray-600" }, [
+                    _vm._v(
+                      "\n          Please provide the email address of the person you would like to add\n          to this club. The email address must be associated with an existing\n          account.\n        "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-span-6 sm:col-span-4" },
+                  [
+                    _c("jet-label", {
+                      attrs: { for: "email", value: "Email" }
+                    }),
+                    _vm._v(" "),
+                    _c("jet-input", {
+                      staticClass: "mt-1 block w-full",
+                      attrs: { id: "email", type: "text" },
+                      model: {
+                        value: _vm.addClubMemberForm.email,
+                        callback: function($$v) {
+                          _vm.$set(_vm.addClubMemberForm, "email", $$v)
+                        },
+                        expression: "addClubMemberForm.email"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("jet-input-error", {
+                      staticClass: "mt-2",
+                      attrs: { message: _vm.addClubMemberForm.error("email") }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _vm.availableRoles.length > 0
+                  ? _c(
+                      "div",
+                      { staticClass: "col-span-6 lg:col-span-4" },
+                      [
+                        _c("jet-label", {
+                          attrs: { for: "roles", value: "Role" }
+                        }),
+                        _vm._v(" "),
+                        _c("jet-input-error", {
+                          staticClass: "mt-2",
+                          attrs: {
+                            message: _vm.addClubMemberForm.error("role")
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "mt-1 border border-gray-200 rounded-lg cursor-pointer"
+                          },
+                          _vm._l(_vm.availableRoles, function(role, i) {
+                            return _c(
+                              "div",
+                              {
+                                key: i,
+                                staticClass: "px-4 py-3",
+                                class: { "border-t border-gray-200": i > 0 },
+                                on: {
+                                  click: function($event) {
+                                    _vm.addClubMemberForm.role = role.id
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    class: {
+                                      "opacity-50":
+                                        _vm.addClubMemberForm.role &&
+                                        _vm.addClubMemberForm.role != role.id
+                                    }
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "flex items-center" },
+                                      [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "text-sm text-gray-600",
+                                            class: {
+                                              "font-semibold":
+                                                _vm.addClubMemberForm.role ==
+                                                role.id
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                  " +
+                                                _vm._s(role.name) +
+                                                "\n                "
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _vm.addClubMemberForm.role == role.id
+                                          ? _c(
+                                              "svg",
+                                              {
+                                                staticClass:
+                                                  "ml-2 h-5 w-5 text-green-400",
+                                                attrs: {
+                                                  fill: "none",
+                                                  "stroke-linecap": "round",
+                                                  "stroke-linejoin": "round",
+                                                  "stroke-width": "2",
+                                                  stroke: "currentColor",
+                                                  viewBox: "0 0 24 24"
+                                                }
+                                              },
+                                              [
+                                                _c("path", {
+                                                  attrs: {
+                                                    d:
+                                                      "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                  }
+                                                })
+                                              ]
+                                            )
+                                          : _vm._e()
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "mt-2 text-xs text-gray-600"
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                " +
+                                            _vm._s(role.description) +
+                                            "\n              "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ]
+                            )
+                          }),
+                          0
+                        )
+                      ],
+                      1
+                    )
+                  : _vm._e()
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "actions",
+            fn: function() {
+              return [
+                _c(
+                  "jet-action-message",
+                  {
+                    staticClass: "mr-3",
+                    attrs: { on: _vm.addClubMemberForm.recentlySuccessful }
+                  },
+                  [_vm._v("\n        Added.\n      ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "jet-button",
+                  {
+                    class: { "opacity-25": _vm.addClubMemberForm.processing },
+                    attrs: { disabled: _vm.addClubMemberForm.processing }
+                  },
+                  [_vm._v("\n        Add\n      ")]
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _vm.club.users.length > 0
+        ? _c(
+            "div",
+            [
+              _c("jet-section-border"),
+              _vm._v(" "),
+              _c("jet-action-section", {
+                staticClass: "mt-10 sm:mt-0",
+                scopedSlots: _vm._u(
+                  [
+                    {
+                      key: "title",
+                      fn: function() {
+                        return [_vm._v(" Team Members ")]
+                      },
+                      proxy: true
+                    },
+                    {
+                      key: "description",
+                      fn: function() {
+                        return [
+                          _vm._v(
+                            "\n        All of the people that are part of this club.\n      "
+                          )
+                        ]
+                      },
+                      proxy: true
+                    },
+                    {
+                      key: "content",
+                      fn: function() {
+                        return [
+                          _c(
+                            "div",
+                            { staticClass: "space-y-6" },
+                            _vm._l(_vm.club.users, function(user) {
+                              return _c(
+                                "div",
+                                {
+                                  key: user.id,
+                                  staticClass:
+                                    "flex items-center justify-between"
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    { staticClass: "flex items-center" },
+                                    [
+                                      _c("img", {
+                                        staticClass: "w-8 h-8 rounded-full",
+                                        attrs: {
+                                          src: user.profile_photo_url,
+                                          alt: user.name
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", { staticClass: "ml-4" }, [
+                                        _vm._v(_vm._s(user.name))
+                                      ])
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "flex items-center" },
+                                    [
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "ml-2 text-sm text-gray-400 underline",
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.manageRole(user)
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                " +
+                                              _vm._s(
+                                                _vm.displayableRole(user.role)
+                                              ) +
+                                              "\n              "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm.$page.user.id === user.id
+                                        ? _c(
+                                            "button",
+                                            {
+                                              staticClass:
+                                                "cursor-pointer ml-6 text-sm text-red-500 focus:outline-none",
+                                              on: {
+                                                click: _vm.confirmLeavingClub
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                Leave\n              "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "cursor-pointer ml-6 text-sm text-red-500 focus:outline-none",
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.confirmClubMemberRemoval(
+                                                user
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                Remove\n              "
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
+                        ]
+                      },
+                      proxy: true
+                    }
+                  ],
+                  null,
+                  false,
+                  4076002847
+                )
+              })
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("jet-dialog-modal", {
+        attrs: { show: _vm.currentlyManagingRole },
+        on: {
+          close: function($event) {
+            _vm.currentlyManagingRole = false
+          }
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "title",
+            fn: function() {
+              return [_vm._v(" Manage Role ")]
+            },
+            proxy: true
+          },
+          {
+            key: "content",
+            fn: function() {
+              return [
+                _vm.managingRoleFor
+                  ? _c("div", [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "mt-1 border border-gray-200 rounded-lg cursor-pointer"
+                        },
+                        _vm._l(_vm.availableRoles, function(role, i) {
+                          return _c(
+                            "div",
+                            {
+                              key: i,
+                              staticClass: "px-4 py-3",
+                              class: { "border-t border-gray-200": i > 0 },
+                              on: {
+                                click: function($event) {
+                                  _vm.updateRoleForm.role = role.id
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  class: {
+                                    "opacity-50":
+                                      _vm.updateRoleForm.role &&
+                                      _vm.updateRoleForm.role != role.id
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    { staticClass: "flex items-center" },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "text-sm text-gray-600",
+                                          class: {
+                                            "font-semibold":
+                                              _vm.updateRoleForm.role == role.id
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                  " +
+                                              _vm._s(role.name) +
+                                              "\n                "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm.updateRoleForm.role == role.id
+                                        ? _c(
+                                            "svg",
+                                            {
+                                              staticClass:
+                                                "ml-2 h-5 w-5 text-green-400",
+                                              attrs: {
+                                                fill: "none",
+                                                "stroke-linecap": "round",
+                                                "stroke-linejoin": "round",
+                                                "stroke-width": "2",
+                                                stroke: "currentColor",
+                                                viewBox: "0 0 24 24"
+                                              }
+                                            },
+                                            [
+                                              _c("path", {
+                                                attrs: {
+                                                  d:
+                                                    "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                }
+                                              })
+                                            ]
+                                          )
+                                        : _vm._e()
+                                    ]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    ])
+                  : _vm._e()
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "footer",
+            fn: function() {
+              return [
+                _c(
+                  "jet-secondary-button",
+                  {
+                    nativeOn: {
+                      click: function($event) {
+                        _vm.currentlyManagingRole = false
+                      }
+                    }
+                  },
+                  [_vm._v("\n        Nevermind\n      ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "jet-button",
+                  {
+                    staticClass: "ml-2",
+                    class: { "opacity-25": _vm.updateRoleForm.processing },
+                    attrs: { disabled: _vm.updateRoleForm.processing },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.updateRole($event)
+                      }
+                    }
+                  },
+                  [_vm._v("\n        Save\n      ")]
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c("jet-confirmation-modal", {
+        attrs: { show: _vm.confirmingLeavingClub },
+        on: {
+          close: function($event) {
+            _vm.confirmingLeavingClub = false
+          }
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "title",
+            fn: function() {
+              return [_vm._v(" Leave Team ")]
+            },
+            proxy: true
+          },
+          {
+            key: "content",
+            fn: function() {
+              return [
+                _vm._v(
+                  "\n      Are you sure you would like to leave this team?\n    "
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "footer",
+            fn: function() {
+              return [
+                _c(
+                  "jet-secondary-button",
+                  {
+                    nativeOn: {
+                      click: function($event) {
+                        _vm.confirmingLeavingClub = false
+                      }
+                    }
+                  },
+                  [_vm._v("\n        Nevermind\n      ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "jet-danger-button",
+                  {
+                    staticClass: "ml-2",
+                    class: { "opacity-25": _vm.leaveClubForm.processing },
+                    attrs: { disabled: _vm.leaveClubForm.processing },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.leaveClub($event)
+                      }
+                    }
+                  },
+                  [_vm._v("\n        Leave\n      ")]
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c("jet-confirmation-modal", {
+        attrs: { show: _vm.clubMemberBeingRemoved },
+        on: {
+          close: function($event) {
+            _vm.clubMemberBeingRemoved = null
+          }
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "title",
+            fn: function() {
+              return [_vm._v(" Remove Team Member ")]
+            },
+            proxy: true
+          },
+          {
+            key: "content",
+            fn: function() {
+              return [
+                _vm._v(
+                  "\n      Are you sure you would like to remove this person from the team?\n    "
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "footer",
+            fn: function() {
+              return [
+                _c(
+                  "jet-secondary-button",
+                  {
+                    nativeOn: {
+                      click: function($event) {
+                        _vm.clubMemberBeingRemoved = null
+                      }
+                    }
+                  },
+                  [_vm._v("\n        Nevermind\n      ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "jet-danger-button",
+                  {
+                    staticClass: "ml-2",
+                    class: {
+                      "opacity-25": _vm.removeClubMemberForm.processing
+                    },
+                    attrs: { disabled: _vm.removeClubMemberForm.processing },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.removeClubMember($event)
+                      }
+                    }
+                  },
+                  [_vm._v("\n        Remove\n      ")]
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/Clubs/ClubRolesForm.vue?vue&type=template&id=0e5a5e40&":
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Pages/Clubs/ClubRolesForm.vue?vue&type=template&id=0e5a5e40& ***!
@@ -28973,6 +30108,15 @@ var render = function() {
             _vm._v(" "),
             _c("manage-club-role-form", {
               attrs: { roles: _vm.$page.club.roles }
+            }),
+            _vm._v(" "),
+            _c("jet-section-border"),
+            _vm._v(" "),
+            _c("club-members-manager", {
+              attrs: {
+                availableRoles: _vm.$page.club.roles,
+                club: _vm.$page.club
+              }
             }),
             _vm._v(" "),
             _c("jet-section-border")
@@ -44433,6 +45577,8 @@ var map = {
 	"./API/Index.vue": "./resources/js/Pages/API/Index.vue",
 	"./Clubs": "./resources/js/Pages/Clubs.vue",
 	"./Clubs.vue": "./resources/js/Pages/Clubs.vue",
+	"./Clubs/ClubMembersManager": "./resources/js/Pages/Clubs/ClubMembersManager.vue",
+	"./Clubs/ClubMembersManager.vue": "./resources/js/Pages/Clubs/ClubMembersManager.vue",
 	"./Clubs/ClubRolesForm": "./resources/js/Pages/Clubs/ClubRolesForm.vue",
 	"./Clubs/ClubRolesForm.vue": "./resources/js/Pages/Clubs/ClubRolesForm.vue",
 	"./Clubs/Create": "./resources/js/Pages/Clubs/Create.vue",
@@ -44687,6 +45833,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Clubs_vue_vue_type_template_id_6addec24___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Clubs_vue_vue_type_template_id_6addec24___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Clubs/ClubMembersManager.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/Pages/Clubs/ClubMembersManager.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ClubMembersManager_vue_vue_type_template_id_0582cb76___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ClubMembersManager.vue?vue&type=template&id=0582cb76& */ "./resources/js/Pages/Clubs/ClubMembersManager.vue?vue&type=template&id=0582cb76&");
+/* harmony import */ var _ClubMembersManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ClubMembersManager.vue?vue&type=script&lang=js& */ "./resources/js/Pages/Clubs/ClubMembersManager.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ClubMembersManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ClubMembersManager_vue_vue_type_template_id_0582cb76___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ClubMembersManager_vue_vue_type_template_id_0582cb76___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/Pages/Clubs/ClubMembersManager.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Clubs/ClubMembersManager.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/Pages/Clubs/ClubMembersManager.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ClubMembersManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ClubMembersManager.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/Clubs/ClubMembersManager.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ClubMembersManager_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Clubs/ClubMembersManager.vue?vue&type=template&id=0582cb76&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/Pages/Clubs/ClubMembersManager.vue?vue&type=template&id=0582cb76& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ClubMembersManager_vue_vue_type_template_id_0582cb76___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ClubMembersManager.vue?vue&type=template&id=0582cb76& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/Clubs/ClubMembersManager.vue?vue&type=template&id=0582cb76&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ClubMembersManager_vue_vue_type_template_id_0582cb76___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ClubMembersManager_vue_vue_type_template_id_0582cb76___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

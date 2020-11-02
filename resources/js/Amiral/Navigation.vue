@@ -96,10 +96,11 @@
                 </jet-dropdown-link>
 
                 <!-- Clubs Switcher -->
+                <div v-if="$page.user.clubs.length > 0">
                 <amiral-dropdown-title> Switch Clubs </amiral-dropdown-title>
 
                 <template v-for="club in $page.user.clubs">
-                  <form @submit.prevent="switchToClub(club)">
+                  <form @submit.prevent="switchToClub(club)" :key="club.id">
                     <jet-dropdown-link as="button">
                       <div class="flex items-center">
                         <svg
@@ -121,6 +122,7 @@
                     </jet-dropdown-link>
                   </form>
                 </template>
+                </div>
 
                 <div class="border-t border-gray-100"></div>
 

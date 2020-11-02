@@ -95,4 +95,9 @@ class User extends Authenticatable
     {
         return $this->club_role($club)->slug === 'admin';
     }
+
+    public function role()
+    {
+        return $this->club_role($this->current_club_id);
+    }
 }
