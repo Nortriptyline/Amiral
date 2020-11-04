@@ -15,7 +15,7 @@ class CreateClubRolesTable extends Migration
     {
         Schema::create('club_roles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('club_id');
+            $table->foreignId('club_id')->constrained()->onDelete('cascade');
             $table->string('slug');
             $table->string('name');
             $table->timestamps();
