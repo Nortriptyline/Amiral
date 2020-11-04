@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Club;
 use App\Models\ClubRole;
 use App\Models\User;
+use App\Notifications\UserInvitedToClub;
 use App\Rules\ExistsInClub;
 use App\Rules\UniqueInClub;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 class ClubRepository implements ClubRepositoryInterface
 {
     private $users;
-
+    
     public function __construct(UserRepository $users)
     {
         $this->users = $users;
@@ -74,7 +75,7 @@ class ClubRepository implements ClubRepositoryInterface
             $summoned = User::where('email', $input['email'])->firstOrFail();
             $role = ClubRole::find($input['role']);
 
-            return $club->inviteUser($summoned, $role);
+            return $this->inviteUser($club, $summoned, $role);
         }
     }
 
@@ -93,5 +94,16 @@ class ClubRepository implements ClubRepositoryInterface
 
             $club->save();
         }
+    }
+
+    public function inviteUser(Club $club, User $user, ClubRole $role)
+    {
+        // $club->users()->attach($user, ['club_role_id' => $role->id]);
+        $user->notify(new UserInvitedToClub([
+            'club' => $club->name,
+            'role' => $role->name
+        ]));
+
+        return $club;
     }
 }

@@ -39,9 +39,4 @@ class Club extends Model
     {
         return $this->roles()->where('slug', $value)->count() > 0;
     }
-
-    public function inviteUser(User $user, ClubRole $role)
-    {
-        return $this->users()->attach($user, ['club_role_id' => $role->id]);
-    }
 }
