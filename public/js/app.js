@@ -25069,10 +25069,22 @@ var render = function() {
                                 ]
                               ),
                               _vm._v(" "),
-                              _c("span", {
-                                staticClass:
-                                  "absolute top-0 rounded-full bg-red-500 uppercase w-7 h-7 p-1 text-xs text-white mr-3"
-                              })
+                              _c(
+                                "span",
+                                {
+                                  staticClass:
+                                    "absolute top-0 rounded-full bg-red-500 uppercase w-7 h-7 p-1 text-xs text-white mr-3"
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                    " +
+                                      _vm._s(
+                                        _vm.$page.user.notifications.length
+                                      ) +
+                                      "\n                  "
+                                  )
+                                ]
+                              )
                             ])
                           ]
                         )

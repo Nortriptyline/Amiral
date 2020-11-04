@@ -68,6 +68,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $with = [
+        'notifications',
         'clubs',
     ];
 

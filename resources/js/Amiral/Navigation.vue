@@ -52,7 +52,7 @@
                     <span
                       class="absolute top-0 rounded-full bg-red-500 uppercase w-7 h-7 p-1 text-xs text-white mr-3"
                     >
-                      
+                      {{ $page.user.notifications.length }}
                     </span>
                   </div>
 
