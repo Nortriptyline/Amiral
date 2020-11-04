@@ -101,7 +101,8 @@ class User extends Authenticatable
 
     public function club_invitations()
     {
-        return $this->belongsToMany('App\Models\Club', 'club_user_invitations');
+        return $this->belongsToMany('App\Models\Club', 'club_user_invitations')
+                ->whereNull('confirmed_at');
     }
 
     public function getRoleAttribute()
