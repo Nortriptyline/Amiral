@@ -45,7 +45,10 @@ class ClubRepository implements ClubRepositoryInterface
 
             $this->users->switchCurrentClub($user, $club);
 
-            return $user->clubs()->attach($club, ['club_role_id' => $role->id]);
+            return $user->clubs()->attach($club, [
+                'club_role_id' => $role->id,
+                'confirmed_at' => now()
+            ]);
         }
     }
 
