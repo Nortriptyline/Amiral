@@ -76,7 +76,8 @@ class User extends Authenticatable
      */
     public function clubs()
     {
-        return $this->belongsToMany('App\Models\Club');
+        return $this->belongsToMany('App\Models\Club')
+                ->whereNotNull('confirmed_at');
     }
 
     public function club_role(Club $club)
@@ -107,7 +108,9 @@ class User extends Authenticatable
     {
         $active_user = Auth::user();
         $club = Club::find($active_user->current_club_id);
-
-        return $this->club_role($club);
+        
+        return isset($club)
+            ? $this->club_role($club)
+            : null;
     }
 }
