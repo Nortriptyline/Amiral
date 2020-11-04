@@ -77,7 +77,8 @@ class User extends Authenticatable
     public function clubs()
     {
         return $this->belongsToMany('App\Models\Club')
-                ->whereNotNull('confirmed_at');
+                ->whereNotNull('confirmed_at')
+                ->withTimestamps();
     }
 
     public function club_role(Club $club)

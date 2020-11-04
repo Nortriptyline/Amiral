@@ -98,7 +98,7 @@ class ClubRepository implements ClubRepositoryInterface
 
     public function inviteUser(Club $club, User $user, ClubRole $role)
     {
-        // $club->users()->attach($user, ['club_role_id' => $role->id]);
+        $club->users()->attach($user, ['club_role_id' => $role->id]);
         $user->notify(new UserInvitedToClub([
             'club' => $club->name,
             'role' => $role->name
