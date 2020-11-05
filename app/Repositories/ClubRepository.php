@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 class ClubRepository implements ClubRepositoryInterface
 {
     private $users;
-    
+
     public function __construct(UserRepository $users)
     {
         $this->users = $users;
@@ -100,9 +100,20 @@ class ClubRepository implements ClubRepositoryInterface
     {
         $club->users()->attach($user, ['club_role_id' => $role->id]);
         $user->notify(new UserInvitedToClub([
-            'club' => $club->name,
-            'role' => $role->name
+            'club' => $club,
+            'role' => $role,
         ]));
+
+        return $club;
+    }
+
+    public function confirmInvitation(Club $club, User $user)
+    {
+        $club->users()->updateExistingPivot($user, ['confirmed_at' => now()]);
+
+        if (!$user->current_club_id) {
+            $this->users->switchCurrentClub($user, $club);
+        }
 
         return $club;
     }

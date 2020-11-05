@@ -31,7 +31,7 @@
         <!-- Settings Dropdown -->
         <div class="hidden sm:flex sm:items-center sm:ml-6">
           <div class="ml-3 relative">
-            <jet-dropdown align="right" width="48">
+            <jet-dropdown align="right" width="80">
               <template #trigger>
                 <button
                   class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
@@ -52,24 +52,48 @@
                     <span
                       class="absolute top-0 rounded-full bg-red-500 uppercase w-7 h-7 p-1 text-xs text-white mr-3"
                     >
-                      {{ $page.user.notifications.length }}
+                      {{ $page.user.UnreadNotificationsLength }}
                     </span>
                   </div>
-
-                  <!-- <div class="ml-1">
-                    <svg
-                      class="fill-current h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </div> -->
                 </button>
+              </template>
+
+              <template #content>
+                <div
+                  v-for="notification in $page.user.notifications"
+                  :key="notification.id"
+                >
+                  <amiral-notification :notification="notification">
+                    <template #picture>
+                      <img
+                        class="w-12 h-12 rounded-full object-cover"
+                        :src="$page.user.profile_photo_url"
+                        :alt="$page.user.name"
+                      />
+                    </template>
+                    <template #content>
+                      You've been invited to join
+                      {{ notification.data.club.name }} as a
+                      {{ notification.data.role.name }}
+                    </template>
+
+                    <template #actions v-if="invitationExists(notification.data.club.id)">
+                        <form
+                          @submit.prevent="joincClub(notification.data.club.id)"
+                        >
+                          <amiral-button type="submit" color="indigo">
+                            Join Club
+                          </amiral-button>
+                        </form>
+                        <amiral-button color="red"> Refuse </amiral-button>
+                    </template>
+
+                    <template #actions v-else>
+
+                    </template>
+                  </amiral-notification>
+                  <div class="border-t border-gray-100"></div>
+                </div>
               </template>
             </jet-dropdown>
           </div>
@@ -397,7 +421,9 @@ import JetDropdown from "@/Jetstream/Dropdown";
 import JetDropdownLink from "@/Jetstream/DropdownLink";
 import JetNavLink from "@/Jetstream/NavLink";
 import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink";
+import AmiralButton from "@/Amiral/Button";
 import AmiralDropdownTitle from "@/Amiral/DropdownTitle";
+import AmiralNotification from "@/Amiral/Notification";
 
 export default {
   components: {
@@ -408,15 +434,46 @@ export default {
     JetNavLink,
     JetResponsiveNavLink,
     AmiralDropdownTitle,
+    AmiralNotification,
+    AmiralButton,
   },
 
   data() {
     return {
       showingNavigationDropdown: false,
+      joinClubForm: this.$inertia.form(
+        {
+          _method: "PATCH",
+        },
+        {
+          bag: "JoinClub",
+        }
+      ),
+
+      refuseClubInvitationForm: this.$inertia.form(
+        {
+          _method: "DELETE",
+        },
+        {
+          bag: "refuseClubInvitation",
+        }
+      ),
     };
   },
 
   methods: {
+    joincClub(club) {
+      console.log(club);
+      this.joinClubForm.post(
+        route("club-members.join", {
+          club: club,
+          user: this.$page.user.id,
+        })
+      );
+    },
+
+    refuseClubInvitation(club) {},
+
     switchToClub(club) {
       this.$inertia.put(
         route("current-club.update"),
@@ -427,6 +484,10 @@ export default {
           preserveState: false,
         }
       );
+    },
+
+    invitationExists: function (club) {
+      return this.$page.user.club_invitations.find((c) => c.id == club);
     },
 
     logout() {
