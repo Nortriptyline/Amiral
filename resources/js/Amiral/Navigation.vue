@@ -90,10 +90,7 @@
                       </form>
                       <amiral-button color="red"> Refuse </amiral-button>
                     </template>
-
-                    <template #actions v-else> </template>
                   </amiral-notification>
-                  <div class="border-t border-gray-100"></div>
                 </div>
               </template>
             </jet-dropdown>

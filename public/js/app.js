@@ -2405,9 +2405,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -2490,6 +2487,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Amiral_CloseButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Amiral/CloseButton */ "./resources/js/Amiral/CloseButton.vue");
+//
+//
 //
 //
 //
@@ -25424,21 +25423,11 @@ var render = function() {
                                         },
                                         proxy: true
                                       }
-                                    : {
-                                        key: "actions",
-                                        fn: function() {
-                                          return undefined
-                                        },
-                                        proxy: true
-                                      }
+                                    : null
                                 ],
                                 null,
                                 true
                               )
-                            }),
-                            _vm._v(" "),
-                            _c("div", {
-                              staticClass: "border-t border-gray-100"
                             })
                           ],
                           1
@@ -25887,51 +25876,56 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      {
-        staticClass:
-          "flex flex-col w-full px-4 py-2 text-sm leading-5 text-gray-700 text-left cursor-pointer hover:bg-indigo-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out",
-        class: _vm.background
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "flex" },
-          [
-            _vm._t("picture"),
-            _vm._v(" "),
-            _c("span", { staticClass: "pl-5" }, [_vm._t("content")], 2),
-            _vm._v(" "),
-            _vm.closable
-              ? _c(
-                  "form",
-                  {
-                    on: {
-                      submit: function($event) {
-                        $event.preventDefault()
-                        return _vm.destroy()
-                      }
+  return _c(
+    "div",
+    [
+      _c(
+        "inertia-link",
+        {
+          staticClass:
+            "block flex flex-col w-full px-4 py-2 text-sm leading-5 text-gray-700 text-left cursor-pointer hover:bg-indigo-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out",
+          class: _vm.background,
+          attrs: { href: "/dashboard" }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "flex" },
+            [
+              _vm._t("picture"),
+              _vm._v(" "),
+              _c("span", { staticClass: "pl-5" }, [_vm._t("content")], 2),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.destroy()
                     }
-                  },
-                  [_c("amiral-close-button", { attrs: { color: "blue" } })],
-                  1
-                )
-              : _vm._e()
-          ],
-          2
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "flex justify-evenly" },
-          [_vm._t("actions")],
-          2
-        )
-      ]
-    )
-  ])
+                  }
+                },
+                [_c("amiral-close-button", { attrs: { color: "blue" } })],
+                1
+              )
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "flex justify-evenly" },
+            [_vm._t("actions")],
+            2
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "border-t border-gray-200" })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

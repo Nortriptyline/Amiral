@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div
-      class="flex flex-col w-full px-4 py-2 text-sm leading-5 text-gray-700 text-left cursor-pointer hover:bg-indigo-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+    <inertia-link
+      class="block flex flex-col w-full px-4 py-2 text-sm leading-5 text-gray-700 text-left cursor-pointer hover:bg-indigo-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
       :class="background"
+      href="/dashboard"
     >
       <div class="flex">
         <slot name="picture"></slot>
@@ -11,7 +12,7 @@
           <slot name="content"></slot>
         </span>
 
-        <form v-if="closable" @submit.prevent="destroy()">
+        <form @submit.prevent="destroy()">
           <amiral-close-button color="blue"></amiral-close-button>
         </form>
       </div>
@@ -19,7 +20,8 @@
       <div class="flex justify-evenly">
         <slot name="actions"></slot>
       </div>
-    </div>
+    </inertia-link>
+    <div class="border-t border-gray-200"></div>
   </div>
 </template>
 
