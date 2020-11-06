@@ -1,26 +1,22 @@
 <template>
   <div>
-    <inertia-link
-      class="block flex flex-col w-full px-4 py-2 text-sm leading-5 text-gray-700 text-left cursor-pointer hover:bg-indigo-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
+    <div
+      class="block flex w-full px-4 py-2 text-sm leading-5 text-gray-700 text-left cursor-pointer hover:bg-indigo-50 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
       :class="background"
-      href="/dashboard"
+      @click="markAsRead"
     >
-      <div class="flex">
-        <slot name="picture"></slot>
-
-        <span class="pl-5">
+      <slot name="picture"></slot>
+      <div class="pl-5 flex flex-col">
+        <div class="py-2 flex">
           <slot name="content"></slot>
-        </span>
+          <form @submit.prevent="destroy()">
+            <slot name="delete"></slot>
+          </form>
+        </div>
 
-        <form @submit.prevent="destroy()">
-          <amiral-close-button color="blue"></amiral-close-button>
-        </form>
-      </div>
-
-      <div class="flex justify-evenly">
         <slot name="actions"></slot>
       </div>
-    </inertia-link>
+    </div>
     <div class="border-t border-gray-200"></div>
   </div>
 </template>
@@ -53,13 +49,17 @@ export default {
   },
   methods: {
     markAsRead: function () {
-      if (this.notification.read_at === null) {
+      if (this.notif.read_at === null) {
         axios
           .post("/notification/" + this.notif.id + "/mark-as-read", {
             _method: "PATCH",
           })
           .then((response) => {
-            return (this.notif = response);
+            this.notif = response.data.notification;
+            if (this.notif.read_at !== null) {
+              this.$emit("notif-read");
+            }
+            return this.notification;
           });
       }
     },

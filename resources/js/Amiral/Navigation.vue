@@ -52,7 +52,7 @@
                     <span
                       class="absolute top-0 rounded-full bg-red-500 uppercase w-7 h-7 p-1 text-xs text-white mr-3"
                     >
-                      {{ $page.user.UnreadNotificationsLength }}
+                      {{ $page.user.unreadNotificationsLength }}
                     </span>
                   </div>
                 </button>
@@ -63,34 +63,7 @@
                   v-for="notification in $page.user.notifications"
                   :key="notification.id"
                 >
-                  <amiral-notification :notification="notification">
-                    <template #picture>
-                      <img
-                        class="w-12 h-12 rounded-full object-cover"
-                        :src="$page.user.profile_photo_url"
-                        :alt="$page.user.name"
-                      />
-                    </template>
-                    <template #content>
-                      You've been invited to join
-                      {{ notification.data.club.name }} as a
-                      {{ notification.data.role.name }}
-                    </template>
-
-                    <template
-                      #actions
-                      v-if="invitationExists(notification.data.club.id)"
-                    >
-                      <form
-                        @submit.prevent="joincClub(notification.data.club.id)"
-                      >
-                        <amiral-button type="submit" color="indigo">
-                          Join Club
-                        </amiral-button>
-                      </form>
-                      <amiral-button color="red"> Refuse </amiral-button>
-                    </template>
-                  </amiral-notification>
+                  <amiral-notification-club v-on:mark-as-read="$page.user.unreadNotificationsLength--" :notification="notification" />
                 </div>
               </template>
             </jet-dropdown>
@@ -314,7 +287,7 @@ import JetNavLink from "@/Jetstream/NavLink";
 import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink";
 import AmiralButton from "@/Amiral/Button";
 import AmiralDropdownTitle from "@/Amiral/DropdownTitle";
-import AmiralNotification from "@/Amiral/Notification";
+import AmiralNotificationClub from "@/Amiral/ClubInviteNotification";
 
 export default {
   components: {
@@ -325,46 +298,17 @@ export default {
     JetNavLink,
     JetResponsiveNavLink,
     AmiralDropdownTitle,
-    AmiralNotification,
+    AmiralNotificationClub,
     AmiralButton,
   },
 
   data() {
     return {
       showingNavigationDropdown: false,
-      joinClubForm: this.$inertia.form(
-        {
-          _method: "PATCH",
-        },
-        {
-          bag: "JoinClub",
-        }
-      ),
-
-      refuseClubInvitationForm: this.$inertia.form(
-        {
-          _method: "DELETE",
-        },
-        {
-          bag: "refuseClubInvitation",
-        }
-      ),
     };
   },
 
   methods: {
-    joincClub(club) {
-      console.log(club);
-      this.joinClubForm.post(
-        route("club-members.join", {
-          club: club,
-          user: this.$page.user.id,
-        })
-      );
-    },
-
-    refuseClubInvitation(club) {},
-
     switchToClub(club) {
       this.$inertia.put(
         route("current-club.update"),
@@ -375,10 +319,6 @@ export default {
           preserveState: false,
         }
       );
-    },
-
-    invitationExists: function (club) {
-      return this.$page.user.club_invitations.find((c) => c.id == club);
     },
 
     logout() {

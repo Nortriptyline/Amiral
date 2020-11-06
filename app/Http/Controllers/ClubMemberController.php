@@ -31,4 +31,10 @@ class ClubMemberController extends Controller
 
         return back();
     }
+
+    public function delete(Request $request, Club $club, User $user)
+    {
+        $this->clubs->withdraw($club, $user);
+        return back();
+    }
 }

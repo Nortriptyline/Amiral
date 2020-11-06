@@ -117,4 +117,11 @@ class ClubRepository implements ClubRepositoryInterface
 
         return $club;
     }
+
+    public function withdraw(Club $club, User $user)
+    {
+        if ($user->can('withdraw', $club)) {
+            $club->users()->detach($user->id);
+        }
+    }
 }

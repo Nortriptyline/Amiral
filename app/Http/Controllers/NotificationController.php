@@ -22,6 +22,8 @@ class NotificationController extends Controller
     {
         $user = Auth::user();
         $user->unreadNotifications->where('id', $notification)->markAsRead();
+        
+        $user->refresh();
 
         return response()->json([
             'notification' => $user->notifications

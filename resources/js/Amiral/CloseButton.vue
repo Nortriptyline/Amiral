@@ -6,7 +6,7 @@
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       fill="currentColor"
-      class="h-4 w-4 transform hover:rotate-90 transition ease-in-out duration-150"
+      class="h-4 w-4 transform hover:rotate-90 transition ease-in-out duration-300"
       :class="colorClass"
     >
       <path

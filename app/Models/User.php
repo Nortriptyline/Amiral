@@ -60,7 +60,7 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
         'role',
-        'UnreadNotificationsLength',
+        'unreadNotificationsLength',
     ];
 
     /**
@@ -96,8 +96,8 @@ class User extends Authenticatable
         $data = $club->users()
             ->where('user_id', $this->id)
             ->first();
-
-        return ClubRole::find($data->pivot->club_role_id);
+ 
+        return $data ? ClubRole::find($data->pivot->club_role_id) : false;
     }
 
     public function hasClubRole(Club $club, $slug)
@@ -107,7 +107,8 @@ class User extends Authenticatable
 
     public function isClubAdmin(Club $club)
     {
-        return $this->club_role($club)->slug === 'admin';
+        $role = $this->club_role($club);
+        return  $role ? $role->slug === 'admin' : false;
     }
 
     public function getRoleAttribute()

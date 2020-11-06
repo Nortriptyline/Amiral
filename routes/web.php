@@ -45,6 +45,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::post('/club/{club}/members', [ClubMemberController::class, 'store'])->name('club-members.store');
     Route::patch('/club/{club}/user/{user}/join', [ClubMemberController::class, 'join'])->name('club-members.join');
+    Route::delete('/club/{club}/user/{user}', [ClubMemberController::class, 'delete'])->name('club-members.delete');
 
     Route::patch('/notification/{notification}/mark-as-read', [NotificationController::class, 'mark_as_read'])->name('notifications.read');
     Route::delete('/notifications/{notification}', [NotificationController::class, 'delete'])->name('notification.delete');
