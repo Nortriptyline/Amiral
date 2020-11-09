@@ -48,6 +48,11 @@ class ClubPolicy
         return Auth::check();
     }
 
+    public function edit(User $user, Club $club)
+    {
+        return $user->clubs()->where('club_id', $club->id)->first();
+    }
+
     /**
      * Determine whether the user can update the model.
      *

@@ -2036,12 +2036,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2052,7 +2046,6 @@ __webpack_require__.r(__webpack_exports__);
   props: ["notification"],
   data: function data() {
     return {
-      action: null,
       acceptForm: this.$inertia.form({
         _method: "PATCH"
       }, {
@@ -2065,36 +2058,15 @@ __webpack_require__.r(__webpack_exports__);
       })
     };
   },
-  computed: {
-    invitationExists: function invitationExists() {
-      var _this = this;
-
-      return this.$page.user.club_invitations.find(function (c) {
-        return c.id == _this.notification.data.club.id;
-      });
-    },
-    joinedClub: function joinedClub() {
-      var _this2 = this;
-
-      return this.$page.user.clubs.find(function (c) {
-        return c.id == _this2.notification.data.club.id;
-      });
-    },
-    status: function status() {
-      return this.joinedClub ? "Accepted" : "Declined";
-    }
-  },
   methods: {
     accept: function accept() {
-      this.action = "mark-as-read";
       this.acceptForm.post(route("club-members.join", {
         club: this.notification.data.club.id,
         user: this.$page.user.id
       }));
     },
     decline: function decline() {
-      this.action = "mark-as-read";
-      this.declineForm.post(route("club-members.delete", {
+      this.declineForm.post(route("club-members.destroy", {
         club: this.notification.data.club.id,
         user: this.$page.user.id
       }));
@@ -2531,22 +2503,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     AmiralReadButton: _Amiral_ReadButton__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ["notification", "unreadable", "action"],
+  props: ["notification"],
   data: function data() {
     return {
       notif: {}
     };
-  },
-  watch: {
-    action: function action() {
-      if (this.action == "mark-as-read") this.markAsRead();
-    }
   },
   computed: {
     color: function color() {
@@ -2556,21 +2522,19 @@ __webpack_require__.r(__webpack_exports__);
       return this.notif.read_at == ( false || undefined);
     }
   },
-  methods: {
-    markAsRead: function markAsRead() {
-      var _this = this;
-
-      // if (this.notif.read_at === null) {
-      axios.post("/notification/" + this.notif.id + "/mark-as-read", {
-        _method: "PATCH"
-      }).then(function (response) {
-        _this.notif = response.data.notification;
-
-        _this.$emit("notif-read", _this.notif.read_at);
-
-        return _this.notif;
-      }); // }
-    }
+  methods: {// markAsRead: function () {
+    //   // if (this.notif.read_at === null) {
+    //   axios
+    //     .post("/notification/" + this.notif.id + "/mark-as-read", {
+    //       _method: "PATCH",
+    //     })
+    //     .then((response) => {
+    //       this.notif = response.data.notification;
+    //       this.$emit("notif-read", this.notif.read_at);
+    //       return this.notif;
+    //     });
+    //   // }
+    // },
   },
   created: function created() {
     this.notif = this.notification;
@@ -2610,16 +2574,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
+    notification: {},
     read: {
       "default": false
     },
     color: {
       "default": "gray"
-    },
-    unreadable: {
-      "default": false
     }
   },
   data: function data() {
@@ -2629,7 +2593,12 @@ __webpack_require__.r(__webpack_exports__);
         text: 700,
         hover_text: 400,
         active_text: 900
-      }
+      },
+      toggleReadForm: this.$inertia.form({
+        read: !this.read
+      }, {
+        bag: "toggleReadNotification"
+      })
     };
   },
   computed: {
@@ -2637,21 +2606,26 @@ __webpack_require__.r(__webpack_exports__);
       return "text-" + this.color + "-" + this.textDepth + " hover:text-" + this.color + "-" + this.depths.hover_text + " focus:text-" + this.color + "-" + this.depths.active_text + " ";
     },
     angle: function angle() {
-      return this.readable ? "180" : "0";
+      return this.read ? "180" : "0";
     },
     textDepth: function textDepth() {
-      return this.unreadable ? "400" : "700";
+      return this.read ? "700" : "400";
     },
-    readable: function readable() {
-      return this.unreadable ? false : this.read;
+    hoverText: function hoverText() {
+      return this.read ? "400" : "700";
     }
   },
   methods: {
     markAsRead: function markAsRead() {
-      if (!this.unreadable) {
-        this.rotate = this.read ? "rotate-180" : "rotate-0";
-        this.$emit("mark-as-read");
-      }
+      this.rotate = this.read ? "rotate-180" : "rotate-0";
+    },
+    toggleNotification: function toggleNotification() {
+      this.form.post(route("notifications.toggle", {
+        notification: this.notification.id
+      }), {
+        preserveScroll: true,
+        preserveStatus: true
+      });
     }
   }
 });
@@ -4365,9 +4339,18 @@ __webpack_require__.r(__webpack_exports__);
     JetSecondaryButton: _Jetstream_SecondaryButton__WEBPACK_IMPORTED_MODULE_10__["default"],
     JetSectionBorder: _Jetstream_SectionBorder__WEBPACK_IMPORTED_MODULE_11__["default"]
   },
-  props: ["club", "availableRoles"],
+  props: ["club", "users"],
   data: function data() {
     return {
+      availableRoles: [{
+        name: "Administrator",
+        slug: "admin",
+        description: "Administrator is able to manage and edit the club and its users."
+      }, {
+        name: "Editor",
+        slug: "editor",
+        description: "Your editors is only allowed to manage its teams and players. He won't be able to access this page."
+      }],
       addClubMemberForm: this.$inertia.form({
         email: "",
         role: null
@@ -4381,11 +4364,13 @@ __webpack_require__.r(__webpack_exports__);
         bag: "updateRole",
         resetOnSuccess: false
       }),
-      leaveClubForm: this.$inertia.form({//
+      leaveClubForm: this.$inertia.form({
+        _method: "_DELETE"
       }, {
         bag: "leaveClub"
       }),
-      removeClubMemberForm: this.$inertia.form({//
+      removeClubMemberForm: this.$inertia.form({
+        _method: "_DELETE"
       }, {
         bag: "removeClubMember"
       }),
@@ -4419,20 +4404,25 @@ __webpack_require__.r(__webpack_exports__);
       this.confirmingLeavingClub = true;
     },
     leaveClub: function leaveClub() {
-      this.leaveClubForm["delete"](route("team-members.destroy", [this.team, this.$page.user]));
+      this.leaveClubForm["delete"](route("club-members.destroy", [this.club, this.$page.user]), {
+        preserveScroll: true
+      });
     },
     confirmClubMemberRemoval: function confirmClubMemberRemoval(clubMember) {
       this.clubMemberBeingRemoved = clubMember;
     },
     removeClubMember: function removeClubMember() {
-      var _this2 = this;
-
-      this.removeClubMemberForm["delete"](route("team-members.destroy", [this.team, this.clubMemberBeingRemoved]), {
-        preserveScroll: true,
-        preserveState: true
-      }).then(function () {
-        _this2.clubMemberBeingRemoved = null;
+      this.removeClubMemberForm["delete"](route("club-members.destroy", {
+        club: this.club,
+        user: this.clubMemberBeingRemoved
+      }), {
+        preserveScroll: true
       });
+    },
+    roleName: function roleName(slug) {
+      return this.availableRoles.find(function (s) {
+        return s.slug == slug;
+      }).name;
     }
   }
 });
@@ -4932,6 +4922,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Jetstream_Input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Jetstream/Input */ "./resources/js/Jetstream/Input.vue");
 /* harmony import */ var _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Jetstream/InputError */ "./resources/js/Jetstream/InputError.vue");
 /* harmony import */ var _Jetstream_Label__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/Jetstream/Label */ "./resources/js/Jetstream/Label.vue");
+/* harmony import */ var _Amiral_Textarea__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/Amiral/Textarea */ "./resources/js/Amiral/Textarea.vue");
 //
 //
 //
@@ -4975,6 +4966,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -4988,21 +5002,23 @@ __webpack_require__.r(__webpack_exports__);
     JetFormSection: _Jetstream_FormSection__WEBPACK_IMPORTED_MODULE_2__["default"],
     JetInput: _Jetstream_Input__WEBPACK_IMPORTED_MODULE_3__["default"],
     JetInputError: _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_4__["default"],
-    JetLabel: _Jetstream_Label__WEBPACK_IMPORTED_MODULE_5__["default"]
+    JetLabel: _Jetstream_Label__WEBPACK_IMPORTED_MODULE_5__["default"],
+    AmiralTextarea: _Amiral_Textarea__WEBPACK_IMPORTED_MODULE_6__["default"]
   },
   data: function data() {
     return {
       form: this.$inertia.form({
-        name: ''
+        name: "",
+        description: ""
       }, {
-        bag: 'createClub',
+        bag: "createClub",
         resetOnSuccess: false
       })
     };
   },
   methods: {
     createClub: function createClub() {
-      this.form.post(route('clubs.store'), {
+      this.form.post(route("clubs.store"), {
         preserveScroll: true
       });
     }
@@ -25187,16 +25203,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("amiral-notification", {
-    attrs: {
-      notification: _vm.notification,
-      unreadable: !_vm.invitationExists,
-      action: _vm.action
-    },
-    on: {
-      "notif-read": function($event) {
-        return _vm.$emit("mark-as-read", $event)
-      }
-    },
+    attrs: { notification: _vm.notification },
     scopedSlots: _vm._u([
       {
         key: "picture",
@@ -25220,9 +25227,7 @@ var render = function() {
             _vm._v(
               "\n    You've been invited to join\n    " +
                 _vm._s(_vm.notification.data.club.name) +
-                " as a\n    " +
-                _vm._s(_vm.notification.data.role.name) +
-                "\n  "
+                " as a\n  "
             )
           ]
         },
@@ -25232,7 +25237,7 @@ var render = function() {
         key: "actions",
         fn: function() {
           return [
-            _vm.invitationExists
+            _vm.notification.data.status == "pending"
               ? _c("div", { staticClass: "flex" }, [
                   _c(
                     "form",
@@ -25282,7 +25287,7 @@ var render = function() {
                         " has been\n        "
                     ),
                     _c("span", { staticClass: "underline" }, [
-                      _vm._v(_vm._s(_vm.status))
+                      _vm._v(_vm._s(_vm.notification.data.status))
                     ])
                   ])
                 ])
@@ -25986,11 +25991,10 @@ var render = function() {
                   [
                     _c("amiral-read-button", {
                       attrs: {
-                        unreadable: _vm.unreadable,
                         color: _vm.color,
-                        read: _vm.read
-                      },
-                      on: { "mark-as-read": _vm.markAsRead }
+                        read: _vm.read,
+                        notification: _vm.notif
+                      }
                     })
                   ],
                   1
@@ -26032,45 +26036,43 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "button",
-    {
-      staticClass:
-        "self-start items-center pl-3 font-semibold text-xs uppercase tracking-widest focus:outline-none transition ease-in-out duration-150",
-      on: {
-        click: function($event) {
-          $event.preventDefault()
-          return _vm.markAsRead($event)
-        }
-      }
-    },
-    [
-      _c(
-        "svg",
-        {
-          staticClass: "h-4 w-4 transform transition ease-in-out duration-300",
-          class: [_vm.colorClass, _vm.rotate],
-          attrs: {
-            xmlns: "http://www.w3.org/2000/svg",
-            viewBox: "0 0 20 20",
-            fill: "currentColor"
-          }
-        },
-        [
-          _c("path", { attrs: { d: "M10 12a2 2 0 100-4 2 2 0 000 4z" } }),
-          _vm._v(" "),
-          _c("path", {
+  return _c("form", [
+    _c(
+      "button",
+      {
+        staticClass:
+          "self-start items-center pl-3 font-semibold text-xs uppercase tracking-widest focus:outline-none transition ease-in-out duration-150",
+        attrs: { type: "submit" }
+      },
+      [
+        _c(
+          "svg",
+          {
+            staticClass:
+              "h-4 w-4 transform transition ease-in-out duration-300",
+            class: [_vm.colorClass, _vm.rotate],
             attrs: {
-              "fill-rule": "evenodd",
-              d:
-                "M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z",
-              "clip-rule": "evenodd"
+              xmlns: "http://www.w3.org/2000/svg",
+              viewBox: "0 0 20 20",
+              fill: "currentColor"
             }
-          })
-        ]
-      )
-    ]
-  )
+          },
+          [
+            _c("path", { attrs: { d: "M10 12a2 2 0 100-4 2 2 0 000 4z" } }),
+            _vm._v(" "),
+            _c("path", {
+              attrs: {
+                "fill-rule": "evenodd",
+                d:
+                  "M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z",
+                "clip-rule": "evenodd"
+              }
+            })
+          ]
+        )
+      ]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -28479,7 +28481,7 @@ var render = function() {
           {
             key: "title",
             fn: function() {
-              return [_vm._v(" Add Team Member ")]
+              return [_vm._v(" Add club Member ")]
             },
             proxy: true
           },
@@ -28565,7 +28567,7 @@ var render = function() {
                                 class: { "border-t border-gray-200": i > 0 },
                                 on: {
                                   click: function($event) {
-                                    _vm.addClubMemberForm.role = role.id
+                                    _vm.addClubMemberForm.role = role.slug
                                   }
                                 }
                               },
@@ -28576,7 +28578,7 @@ var render = function() {
                                     class: {
                                       "opacity-50":
                                         _vm.addClubMemberForm.role &&
-                                        _vm.addClubMemberForm.role != role.id
+                                        _vm.addClubMemberForm.role != role.slug
                                     }
                                   },
                                   [
@@ -28592,7 +28594,7 @@ var render = function() {
                                             class: {
                                               "font-semibold":
                                                 _vm.addClubMemberForm.role ==
-                                                role.id
+                                                role.slug
                                             }
                                           },
                                           [
@@ -28604,7 +28606,7 @@ var render = function() {
                                           ]
                                         ),
                                         _vm._v(" "),
-                                        _vm.addClubMemberForm.role == role.id
+                                        _vm.addClubMemberForm.role == role.slug
                                           ? _c(
                                               "svg",
                                               {
@@ -28689,7 +28691,7 @@ var render = function() {
         ])
       }),
       _vm._v(" "),
-      _vm.club.users.length > 0
+      _vm.users.length > 0
         ? _c(
             "div",
             [
@@ -28724,7 +28726,7 @@ var render = function() {
                           _c(
                             "div",
                             { staticClass: "space-y-6" },
-                            _vm._l(_vm.club.users, function(user) {
+                            _vm._l(_vm.users, function(user) {
                               return _c(
                                 "div",
                                 {
@@ -28769,7 +28771,9 @@ var render = function() {
                                         [
                                           _vm._v(
                                             "\n                " +
-                                              _vm._s(user.role.name) +
+                                              _vm._s(
+                                                _vm.roleName(user.pivot.role)
+                                              ) +
                                               "\n              "
                                           )
                                         ]
@@ -28826,7 +28830,7 @@ var render = function() {
                   ],
                   null,
                   false,
-                  2860871795
+                  2577744516
                 )
               })
             ],
@@ -28870,7 +28874,7 @@ var render = function() {
                               class: { "border-t border-gray-200": i > 0 },
                               on: {
                                 click: function($event) {
-                                  _vm.updateRoleForm.role = role.id
+                                  _vm.updateRoleForm.role = role.slug
                                 }
                               }
                             },
@@ -28881,7 +28885,7 @@ var render = function() {
                                   class: {
                                     "opacity-50":
                                       _vm.updateRoleForm.role &&
-                                      _vm.updateRoleForm.role != role.id
+                                      _vm.updateRoleForm.role != role.slug
                                   }
                                 },
                                 [
@@ -28895,7 +28899,8 @@ var render = function() {
                                           staticClass: "text-sm text-gray-600",
                                           class: {
                                             "font-semibold":
-                                              _vm.updateRoleForm.role == role.id
+                                              _vm.updateRoleForm.role ==
+                                              role.slug
                                           }
                                         },
                                         [
@@ -28907,7 +28912,7 @@ var render = function() {
                                         ]
                                       ),
                                       _vm._v(" "),
-                                      _vm.updateRoleForm.role == role.id
+                                      _vm.updateRoleForm.role == role.slug
                                         ? _c(
                                             "svg",
                                             {
@@ -29004,7 +29009,7 @@ var render = function() {
             fn: function() {
               return [
                 _vm._v(
-                  "\n      Are you sure you would like to leave this team?\n    "
+                  "\n      Are you sure you would like to leave this club?\n    "
                 )
               ]
             },
@@ -29888,7 +29893,7 @@ var render = function() {
       {
         key: "title",
         fn: function() {
-          return [_vm._v("\n        Club Details\n    ")]
+          return [_vm._v(" Club Details ")]
         },
         proxy: true
       },
@@ -29897,7 +29902,7 @@ var render = function() {
         fn: function() {
           return [
             _vm._v(
-              "\n        Create a new club to collaborate with others on projects.\n    "
+              "\n    Create a new club to collaborate with others on projects.\n  "
             )
           ]
         },
@@ -29958,6 +29963,34 @@ var render = function() {
                 })
               ],
               1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-span-6 sm:col-span-4" },
+              [
+                _c("jet-label", {
+                  attrs: { for: "name", value: "Club Description" }
+                }),
+                _vm._v(" "),
+                _c("amiral-textarea", {
+                  staticClass: "mt-1 block w-full",
+                  attrs: { id: "description", autofocus: "" },
+                  model: {
+                    value: _vm.form.description,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "description", $$v)
+                    },
+                    expression: "form.description"
+                  }
+                }),
+                _vm._v(" "),
+                _c("jet-input-error", {
+                  staticClass: "mt-2",
+                  attrs: { message: _vm.form.error("name") }
+                })
+              ],
+              1
             )
           ]
         },
@@ -29973,7 +30006,7 @@ var render = function() {
                 staticClass: "mr-3",
                 attrs: { on: _vm.form.recentlySuccessful }
               },
-              [_vm._v("\n            Saved.\n        ")]
+              [_vm._v("\n      Saved.\n    ")]
             ),
             _vm._v(" "),
             _c(
@@ -29982,7 +30015,7 @@ var render = function() {
                 class: { "opacity-25": _vm.form.processing },
                 attrs: { disabled: _vm.form.processing }
               },
-              [_vm._v("\n            Save\n        ")]
+              [_vm._v("\n      Save\n    ")]
             )
           ]
         },
@@ -30533,21 +30566,8 @@ var render = function() {
             _vm._v(" "),
             _c("jet-section-border"),
             _vm._v(" "),
-            _c("create-club-role-form"),
-            _vm._v(" "),
-            _c("jet-section-border"),
-            _vm._v(" "),
-            _c("manage-club-role-form", {
-              attrs: { roles: _vm.$page.club.roles }
-            }),
-            _vm._v(" "),
-            _c("jet-section-border"),
-            _vm._v(" "),
             _c("club-members-manager", {
-              attrs: {
-                availableRoles: _vm.$page.club.roles,
-                club: _vm.$page.club
-              }
+              attrs: { club: _vm.$page.club, users: _vm.$page.users }
             }),
             _vm._v(" "),
             _c("jet-section-border")

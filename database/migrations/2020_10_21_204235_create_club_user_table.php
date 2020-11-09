@@ -15,9 +15,10 @@ class CreateClubUserTable extends Migration
     {
         Schema::create('club_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('club_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('club_role_id')->constrained('club_roles')->onDelete('cascade');
+            $table->foreignId('club_id')->constrained('clubs')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('role');
+            $table->timestamp('confirmed_at')->nullable();
             $table->timestamps();
         });
     }

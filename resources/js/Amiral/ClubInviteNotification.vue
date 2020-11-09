@@ -1,10 +1,5 @@
 <template>
-  <amiral-notification
-    v-on:notif-read="$emit('mark-as-read', $event)"
-    :notification="notification"
-    :unreadable="!invitationExists"
-    :action="action"
-  >
+  <amiral-notification :notification="notification">
     <template #picture>
       <img
         class="w-12 h-12 rounded-full object-cover"
@@ -15,11 +10,10 @@
     <template #content>
       You've been invited to join
       {{ notification.data.club.name }} as a
-      {{ notification.data.role.name }}
     </template>
 
     <template #actions>
-      <div v-if="invitationExists" class="flex">
+      <div v-if="notification.data.status == 'pending'" class="flex">
         <form @submit.prevent="accept">
           <amiral-button type="submit" color="indigo">
             Join Club
@@ -33,7 +27,7 @@
       <div class="text-left" v-else>
         <span class="text-gray-400 text-xs">
           Invitation from {{ notification.data.club.name }} has been
-          <span class="underline">{{ status }}</span></span
+          <span class="underline">{{ notification.data.status }}</span></span
         >
       </div>
     </template>
@@ -52,7 +46,6 @@ export default {
   props: ["notification"],
   data: function () {
     return {
-      action: null,
       acceptForm: this.$inertia.form(
         {
           _method: "PATCH",
@@ -71,25 +64,8 @@ export default {
       ),
     };
   },
-  computed: {
-    invitationExists: function () {
-      return this.$page.user.club_invitations.find(
-        (c) => c.id == this.notification.data.club.id
-      );
-    },
-    joinedClub: function () {
-      return this.$page.user.clubs.find(
-        (c) => c.id == this.notification.data.club.id
-      );
-    },
-
-    status: function () {
-      return this.joinedClub ? "Accepted" : "Declined";
-    },
-  },
   methods: {
     accept() {
-      this.action = "mark-as-read";
       this.acceptForm.post(
         route("club-members.join", {
           club: this.notification.data.club.id,
@@ -98,9 +74,8 @@ export default {
       );
     },
     decline() {
-      this.action="mark-as-read";
       this.declineForm.post(
-        route("club-members.delete", {
+        route("club-members.destroy", {
           club: this.notification.data.club.id,
           user: this.$page.user.id,
         })

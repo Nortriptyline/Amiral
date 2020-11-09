@@ -4,7 +4,7 @@
 
     <!-- Add Team Member -->
     <jet-form-section @submitted="addClubMember">
-      <template #title> Add Team Member </template>
+      <template #title> Add club Member </template>
 
       <template #description>
         Add a new team member to your team, allowing them to collaborate with
@@ -47,7 +47,7 @@
             <div
               class="px-4 py-3"
               :class="{ 'border-t border-gray-200': i > 0 }"
-              @click="addClubMemberForm.role = role.id"
+              @click="addClubMemberForm.role = role.slug"
               v-for="(role, i) in availableRoles"
               :key="i"
             >
@@ -55,7 +55,7 @@
                 :class="{
                   'opacity-50':
                     addClubMemberForm.role &&
-                    addClubMemberForm.role != role.id,
+                    addClubMemberForm.role != role.slug,
                 }"
               >
                 <!-- Role Name -->
@@ -63,14 +63,14 @@
                   <div
                     class="text-sm text-gray-600"
                     :class="{
-                      'font-semibold': addClubMemberForm.role == role.id,
+                      'font-semibold': addClubMemberForm.role == role.slug,
                     }"
                   >
                     {{ role.name }}
                   </div>
 
                   <svg
-                    v-if="addClubMemberForm.role == role.id"
+                    v-if="addClubMemberForm.role == role.slug"
                     class="ml-2 h-5 w-5 text-green-400"
                     fill="none"
                     stroke-linecap="round"
@@ -112,7 +112,7 @@
       </template>
     </jet-form-section>
 
-    <div v-if="club.users.length > 0">
+    <div v-if="users.length > 0">
       <jet-section-border />
 
       <!-- Manage Team Members -->
@@ -128,7 +128,7 @@
           <div class="space-y-6">
             <div
               class="flex items-center justify-between"
-              v-for="user in club.users"
+              v-for="user in users"
               :key="user.id"
             >
               <div class="flex items-center">
@@ -146,7 +146,7 @@
                   class="ml-2 text-sm text-gray-400 underline"
                   @click="manageRole(user)"
                 >
-                  {{ user.role.name }}
+                  {{ roleName(user.pivot.role) }}
                 </button>
 
                 <!-- Leave Team -->
@@ -185,14 +185,14 @@
             <div
               class="px-4 py-3"
               :class="{ 'border-t border-gray-200': i > 0 }"
-              @click="updateRoleForm.role = role.id"
+              @click="updateRoleForm.role = role.slug"
               v-for="(role, i) in availableRoles"
               :key="i"
             >
               <div
                 :class="{
                   'opacity-50':
-                    updateRoleForm.role && updateRoleForm.role != role.id,
+                    updateRoleForm.role && updateRoleForm.role != role.slug,
                 }"
               >
                 <!-- Role Name -->
@@ -200,14 +200,14 @@
                   <div
                     class="text-sm text-gray-600"
                     :class="{
-                      'font-semibold': updateRoleForm.role == role.id,
+                      'font-semibold': updateRoleForm.role == role.slug,
                     }"
                   >
                     {{ role.name }}
                   </div>
 
                   <svg
-                    v-if="updateRoleForm.role == role.id"
+                    v-if="updateRoleForm.role == role.slug"
                     class="ml-2 h-5 w-5 text-green-400"
                     fill="none"
                     stroke-linecap="round"
@@ -256,7 +256,7 @@
       <template #title> Leave Team </template>
 
       <template #content>
-        Are you sure you would like to leave this team?
+        Are you sure you would like to leave this club?
       </template>
 
       <template #footer>
@@ -334,10 +334,24 @@ export default {
     JetSectionBorder,
   },
 
-  props: ["club", "availableRoles"],
+  props: ["club", "users"],
 
   data() {
     return {
+      availableRoles: [
+        {
+          name: "Administrator",
+          slug: "admin",
+          description:
+            "Administrator is able to manage and edit the club and its users.",
+        },
+        {
+          name: "Editor",
+          slug: "editor",
+          description:
+            "Your editors is only allowed to manage its teams and players. He won't be able to access this page.",
+        },
+      ],
       addClubMemberForm: this.$inertia.form(
         {
           email: "",
@@ -361,7 +375,7 @@ export default {
 
       leaveClubForm: this.$inertia.form(
         {
-          //
+          _method: "_DELETE",
         },
         {
           bag: "leaveClub",
@@ -370,7 +384,7 @@ export default {
 
       removeClubMemberForm: this.$inertia.form(
         {
-          //
+          _method: "_DELETE",
         },
         {
           bag: "removeClubMember",
@@ -413,7 +427,10 @@ export default {
 
     leaveClub() {
       this.leaveClubForm.delete(
-        route("team-members.destroy", [this.team, this.$page.user])
+        route("club-members.destroy", [this.club, this.$page.user]),
+        {
+          preserveScroll: true,
+        }
       );
     },
 
@@ -422,20 +439,19 @@ export default {
     },
 
     removeClubMember() {
-      this.removeClubMemberForm
-        .delete(
-          route("team-members.destroy", [
-            this.team,
-            this.clubMemberBeingRemoved,
-          ]),
-          {
-            preserveScroll: true,
-            preserveState: true,
-          }
-        )
-        .then(() => {
-          this.clubMemberBeingRemoved = null;
-        });
+      this.removeClubMemberForm.delete(
+        route("club-members.destroy", {
+          club: this.club,
+          user: this.clubMemberBeingRemoved,
+        }),
+        {
+          preserveScroll: true,
+        }
+      );
+    },
+
+    roleName: function (slug) {
+      return this.availableRoles.find((s) => s.slug == slug).name;
     },
   },
 };

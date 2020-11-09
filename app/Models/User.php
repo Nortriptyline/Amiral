@@ -59,7 +59,6 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
-        'role',
         'unreadNotificationsLength',
     ];
 
@@ -71,7 +70,6 @@ class User extends Authenticatable
     protected $with = [
         'notifications',
         'clubs',
-        'club_invitations',
     ];
 
     /**
@@ -79,46 +77,17 @@ class User extends Authenticatable
      */
     public function clubs()
     {
-        return $this->belongsToMany('App\Models\Club')
-            ->whereNotNull('confirmed_at')
-            ->withTimestamps();
+        return $this->belongsToMany('App\Models\Club')->withPivot('role');
     }
 
-    public function club_invitations()
+    public function roleInClub(Club $club)
     {
-        return $this->belongsToMany('App\Models\Club', 'club_user', 'user_id', 'club_id')
-            ->whereNull('confirmed_at')
-            ->withTimestamps();
-    }
-
-    public function club_role(Club $club)
-    {
-        $data = $club->users()
-            ->where('user_id', $this->id)
-            ->first();
- 
-        return $data ? ClubRole::find($data->pivot->club_role_id) : false;
-    }
-
-    public function hasClubRole(Club $club, $slug)
-    {
-        return $this->club_role($club)->slug === $slug;
+        return $this->clubs()->where('club_id', $club->id)->first()->pivot->role;
     }
 
     public function isClubAdmin(Club $club)
     {
-        $role = $this->club_role($club);
-        return  $role ? $role->slug === 'admin' : false;
-    }
-
-    public function getRoleAttribute()
-    {
-        $active_user = Auth::user();
-        $club = Club::find($active_user->current_club_id);
-
-        return isset($club)
-            ? $this->club_role($club)
-            : null;
+        return $this->roleInClub($club) == 'admin';
     }
 
     public function getUnreadNotificationsLengthAttribute()

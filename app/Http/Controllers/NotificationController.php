@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class NotificationController extends Controller
 {
@@ -19,23 +20,24 @@ class NotificationController extends Controller
         return back();
     }
 
-    public function mark_as_read(Request $request, $notification)
+    public function toggle(Request $request, $notification)
     {
         $user = Auth::user();
-        if ($user->unreadNotifications->where('id', $notification)->count() > 0) {
-            $user->unreadNotifications->where('id', $notification)->markAsRead();
+        
+        Validator::make($request->all(), [
+            'read' => ['required', 'boolean']
+        ])->validateWithBag("toggleReadNotification");
+
+        // If read is true, mark as read
+        if ($request->read) {
+            $request->user()->unreadNotifications->where('id', $notification)->markAsRead();
         } else {
             $affected = DB::table('notifications')
                 ->where('id', $notification)
                 ->update(['read_at' => null]);
+
         }
 
-        $user->refresh();
-
-        return response()->json([
-            'notification' => $user->notifications
-                ->where('id', $notification)
-                ->first(),
-        ]);
+        // return back();
     }
 }

@@ -12,18 +12,18 @@
 
         <jet-section-border />
 
-        <create-club-role-form></create-club-role-form>
+        <!-- <create-club-role-form></create-club-role-form>
 
-        <jet-section-border />
+        <jet-section-border /> -->
 
-        <manage-club-role-form
+        <!-- <manage-club-role-form
           :roles="$page.club.roles"
         ></manage-club-role-form>
-        <jet-section-border />
+        <jet-section-border /> -->
 
         <club-members-manager
-          :availableRoles="$page.club.roles"
           :club="$page.club"
+          :users="$page.users"
         ></club-members-manager>
 
         <jet-section-border />

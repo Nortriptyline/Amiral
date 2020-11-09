@@ -14,7 +14,7 @@ class AddCurrentClub extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('current_club_id')->nullable();
+            $table->foreignId('current_club_id')->nullable()->constrained('clubs');
         });
     }
 

@@ -55,9 +55,8 @@ class ClubController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Club $club)
+    public function edit(Request $request, Club $club)
     {
-
         return Inertia::render('Clubs/Settings', [
             'club' => $club,
             'users' => $club->users,

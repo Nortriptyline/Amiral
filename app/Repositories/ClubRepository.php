@@ -33,23 +33,21 @@ class ClubRepository implements ClubRepositoryInterface
         if ($user->can('create', Club::class)) {
             Validator::make($input, [
                 'name' => ['required', 'string', 'max:255'],
+                'description' => ['string', 'max:65,535'],
             ])->validateWithBag('createClub');
 
             $club = Club::create([
                 'name' => $input['name'],
+                'description' => $input['description'],
+                'owner' => $user->id,
             ]);
 
-            $role = $club->roles()->create([
-                'slug' => 'admin',
-                'name' => 'Administrator',
+            $user->clubs()->attach($club, [
+                'role' => 'admin',
+                'confirmed_at' => now(),
             ]);
 
-            $this->users->switchCurrentClub($user, $club);
-
-            return $user->clubs()->attach($club, [
-                'club_role_id' => $role->id,
-                'confirmed_at' => now()
-            ]);
+            return $this->users->switchCurrentClub($user, $club);
         }
     }
 
@@ -58,24 +56,17 @@ class ClubRepository implements ClubRepositoryInterface
         $user = Auth::user();
 
         if ($user->can('update', $club)) {
-
-
             Validator::make($input, [
                 'email' => ['required', 'email', 'exists:users,email', new UniqueInClub([
                     'club' => $club,
                     'pivot' => 'users'
                 ])],
-                'role' => ['required', new ExistsInClub([
-                    'club' => $club,
-                    'pivot' => 'roles',
-                    'field' => 'id',
-                ])],
+                'role' => ['required', 'in:admin,editor'],
             ])->validateWithBag('addClubMember');
 
-            $summoned = User::where('email', $input['email'])->firstOrFail();
-            $role = ClubRole::find($input['role']);
+            $summoned = User::where('email', $input['email'])->first();
 
-            return $this->inviteUser($club, $summoned, $role);
+            return $this->inviteUser($club, $summoned, $input['role']);
         }
     }
 
@@ -96,12 +87,13 @@ class ClubRepository implements ClubRepositoryInterface
         }
     }
 
-    public function inviteUser(Club $club, User $user, ClubRole $role)
+    public function inviteUser(Club $club, User $user, $role)
     {
-        $club->users()->attach($user, ['club_role_id' => $role->id]);
+        $club->users()->attach($user, ['role' => $role]);
         $user->notify(new UserInvitedToClub([
-            'club' => $club,
-            'role' => $role,
+            'user' => ['id' => $user->id, 'name' => $user->name, 'role' => $role],
+            'club' => ['id' => $club->id, 'name' => $club->name],
+            'status' => 'pending'
         ]));
 
         return $club;
