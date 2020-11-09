@@ -1989,59 +1989,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Amiral/CloseButton.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Amiral/CloseButton.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    color: {
-      "default": "grey"
-    }
-  },
-  data: function data() {
-    return {
-      depths: {
-        text: 700,
-        hover_text: 400,
-        active_text: 900
-      }
-    };
-  },
-  computed: {
-    colorClass: function colorClass() {
-      return "text-" + this.color + "-" + this.depths.text + " hover:text-" + this.color + "-" + this.depths.hover_text + " focus:text-" + this.color + "-" + this.depths.active_text + " ";
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Amiral/ClubInviteNotification.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Amiral/ClubInviteNotification.vue?vue&type=script&lang=js& ***!
@@ -2053,7 +2000,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Amiral_Notification__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Amiral/Notification */ "./resources/js/Amiral/Notification.vue");
 /* harmony import */ var _Amiral_Button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Amiral/Button */ "./resources/js/Amiral/Button.vue");
-/* harmony import */ var _Amiral_CloseButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Amiral/CloseButton */ "./resources/js/Amiral/CloseButton.vue");
 //
 //
 //
@@ -2096,22 +2042,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     AmiralNotification: _Amiral_Notification__WEBPACK_IMPORTED_MODULE_0__["default"],
-    AmiralButton: _Amiral_Button__WEBPACK_IMPORTED_MODULE_1__["default"],
-    AmiralCloseButton: _Amiral_CloseButton__WEBPACK_IMPORTED_MODULE_2__["default"]
+    AmiralButton: _Amiral_Button__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: ["notification"],
   data: function data() {
     return {
+      action: null,
       acceptForm: this.$inertia.form({
         _method: "PATCH"
       }, {
@@ -2139,21 +2080,20 @@ __webpack_require__.r(__webpack_exports__);
         return c.id == _this2.notification.data.club.id;
       });
     },
-    deletable: function deletable() {
-      return !this.invitationExists;
-    },
     status: function status() {
       return this.joinedClub ? "Accepted" : "Declined";
     }
   },
   methods: {
     accept: function accept() {
+      this.action = "mark-as-read";
       this.acceptForm.post(route("club-members.join", {
         club: this.notification.data.club.id,
         user: this.$page.user.id
       }));
     },
     decline: function decline() {
+      this.action = "mark-as-read";
       this.declineForm.post(route("club-members.delete", {
         club: this.notification.data.club.id,
         user: this.$page.user.id
@@ -2534,6 +2474,13 @@ __webpack_require__.r(__webpack_exports__);
         preserveState: false
       });
     },
+    updateCounter: function updateCounter(read_at) {
+      if (read_at == null || undefined) {
+        this.$page.user.unreadNotificationsLength++;
+      } else {
+        this.$page.user.unreadNotificationsLength--;
+      }
+    },
     logout: function logout() {
       axios.post(route("logout").url()).then(function (response) {
         window.location = "/";
@@ -2558,7 +2505,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Amiral_CloseButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Amiral/CloseButton */ "./resources/js/Amiral/CloseButton.vue");
+/* harmony import */ var _Amiral_ReadButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Amiral/ReadButton */ "./resources/js/Amiral/ReadButton.vue");
+//
+//
+//
 //
 //
 //
@@ -2585,53 +2535,124 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    AmiralCloseButton: _Amiral_CloseButton__WEBPACK_IMPORTED_MODULE_0__["default"]
+    AmiralReadButton: _Amiral_ReadButton__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ["notification", "closable"],
+  props: ["notification", "unreadable", "action"],
   data: function data() {
     return {
-      notif: {},
-      deleteForm: this.$inertia.form({
-        _method: "DELETE"
-      }, {
-        bag: "deleteNotification"
-      })
+      notif: {}
     };
   },
+  watch: {
+    action: function action() {
+      if (this.action == "mark-as-read") this.markAsRead();
+    }
+  },
   computed: {
-    background: function background() {
-      return this.notif.read_at === null ? "bg-indigo-50" : "";
+    color: function color() {
+      return this.read ? "indigo" : "gray";
+    },
+    read: function read() {
+      return this.notif.read_at == ( false || undefined);
     }
   },
   methods: {
     markAsRead: function markAsRead() {
       var _this = this;
 
-      if (this.notif.read_at === null) {
-        axios.post("/notification/" + this.notif.id + "/mark-as-read", {
-          _method: "PATCH"
-        }).then(function (response) {
-          _this.notif = response.data.notification;
+      // if (this.notif.read_at === null) {
+      axios.post("/notification/" + this.notif.id + "/mark-as-read", {
+        _method: "PATCH"
+      }).then(function (response) {
+        _this.notif = response.data.notification;
 
-          if (_this.notif.read_at !== null) {
-            _this.$emit("notif-read");
-          }
+        _this.$emit("notif-read", _this.notif.read_at);
 
-          return _this.notification;
-        });
-      }
-    },
-    destroy: function destroy() {
-      this.deleteForm.post(route("notification.delete", {
-        notification: this.notif.id
-      }, {
-        preserveState: true,
-        preserveScoll: true
-      }));
+        return _this.notif;
+      }); // }
     }
   },
   created: function created() {
     this.notif = this.notification;
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Amiral/ReadButton.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Amiral/ReadButton.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    read: {
+      "default": false
+    },
+    color: {
+      "default": "gray"
+    },
+    unreadable: {
+      "default": false
+    }
+  },
+  data: function data() {
+    return {
+      rotate: 0,
+      depths: {
+        text: 700,
+        hover_text: 400,
+        active_text: 900
+      }
+    };
+  },
+  computed: {
+    colorClass: function colorClass() {
+      return "text-" + this.color + "-" + this.textDepth + " hover:text-" + this.color + "-" + this.depths.hover_text + " focus:text-" + this.color + "-" + this.depths.active_text + " ";
+    },
+    angle: function angle() {
+      return this.readable ? "180" : "0";
+    },
+    textDepth: function textDepth() {
+      return this.unreadable ? "400" : "700";
+    },
+    readable: function readable() {
+      return this.unreadable ? false : this.read;
+    }
+  },
+  methods: {
+    markAsRead: function markAsRead() {
+      if (!this.unreadable) {
+        this.rotate = this.read ? "rotate-180" : "rotate-0";
+        this.$emit("mark-as-read");
+      }
+    }
   }
 });
 
@@ -25150,61 +25171,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Amiral/CloseButton.vue?vue&type=template&id=0ec0c30e&":
-/*!**********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Amiral/CloseButton.vue?vue&type=template&id=0ec0c30e& ***!
-  \**********************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "button",
-    {
-      staticClass:
-        "self-start items-center pl-3 font-semibold text-xs uppercase tracking-widest focus:outline-none transition ease-in-out duration-150"
-    },
-    [
-      _c(
-        "svg",
-        {
-          staticClass:
-            "h-4 w-4 transform hover:rotate-90 transition ease-in-out duration-300",
-          class: _vm.colorClass,
-          attrs: {
-            xmlns: "http://www.w3.org/2000/svg",
-            viewBox: "0 0 20 20",
-            fill: "currentColor"
-          }
-        },
-        [
-          _c("path", {
-            attrs: {
-              "fill-rule": "evenodd",
-              d:
-                "M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z",
-              "clip-rule": "evenodd"
-            }
-          })
-        ]
-      )
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Amiral/ClubInviteNotification.vue?vue&type=template&id=5291358b&":
 /*!*********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Amiral/ClubInviteNotification.vue?vue&type=template&id=5291358b& ***!
@@ -25221,10 +25187,14 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("amiral-notification", {
-    attrs: { notification: _vm.notification },
+    attrs: {
+      notification: _vm.notification,
+      unreadable: !_vm.invitationExists,
+      action: _vm.action
+    },
     on: {
       "notif-read": function($event) {
-        return _vm.$emit("mark-as-read")
+        return _vm.$emit("mark-as-read", $event)
       }
     },
     scopedSlots: _vm._u([
@@ -25307,7 +25277,7 @@ var render = function() {
               : _c("div", { staticClass: "text-left" }, [
                   _c("span", { staticClass: "text-gray-400 text-xs" }, [
                     _vm._v(
-                      "Invitation from " +
+                      "\n        Invitation from " +
                         _vm._s(_vm.notification.data.club.name) +
                         " has been\n        "
                     ),
@@ -25316,20 +25286,6 @@ var render = function() {
                     ])
                   ])
                 ])
-          ]
-        },
-        proxy: true
-      },
-      {
-        key: "delete",
-        fn: function() {
-          return [
-            _vm.deletable
-              ? _c("amiral-close-button", {
-                  directives: [{ name: "tippy", rawName: "v-tippy" }],
-                  attrs: { title: "Delete Notification", color: "blue" }
-                })
-              : _vm._e()
           ]
         },
         proxy: true
@@ -25553,7 +25509,7 @@ var render = function() {
                               attrs: { notification: notification },
                               on: {
                                 "mark-as-read": function($event) {
-                                  _vm.$page.user.unreadNotificationsLength--
+                                  return _vm.updateCounter($event)
                                 }
                               }
                             })
@@ -26009,9 +25965,7 @@ var render = function() {
       "div",
       {
         staticClass:
-          "block flex w-full px-4 py-2 text-sm leading-5 text-gray-700 text-left cursor-pointer hover:bg-indigo-50 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out",
-        class: _vm.background,
-        on: { click: _vm.markAsRead }
+          "block flex w-full px-4 py-2 text-sm leading-5 text-gray-700 text-left cursor-pointer hover:bg-indigo-50 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
       },
       [
         _vm._t("picture"),
@@ -26027,17 +25981,19 @@ var render = function() {
                 _vm._t("content"),
                 _vm._v(" "),
                 _c(
-                  "form",
-                  {
-                    on: {
-                      submit: function($event) {
-                        $event.preventDefault()
-                        return _vm.destroy()
-                      }
-                    }
-                  },
-                  [_vm._t("delete")],
-                  2
+                  "div",
+                  { staticClass: "w-1/4" },
+                  [
+                    _c("amiral-read-button", {
+                      attrs: {
+                        unreadable: _vm.unreadable,
+                        color: _vm.color,
+                        read: _vm.read
+                      },
+                      on: { "mark-as-read": _vm.markAsRead }
+                    })
+                  ],
+                  1
                 )
               ],
               2
@@ -26053,6 +26009,68 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "border-t border-gray-200" })
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Amiral/ReadButton.vue?vue&type=template&id=3e0aeaee&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Amiral/ReadButton.vue?vue&type=template&id=3e0aeaee& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "button",
+    {
+      staticClass:
+        "self-start items-center pl-3 font-semibold text-xs uppercase tracking-widest focus:outline-none transition ease-in-out duration-150",
+      on: {
+        click: function($event) {
+          $event.preventDefault()
+          return _vm.markAsRead($event)
+        }
+      }
+    },
+    [
+      _c(
+        "svg",
+        {
+          staticClass: "h-4 w-4 transform transition ease-in-out duration-300",
+          class: [_vm.colorClass, _vm.rotate],
+          attrs: {
+            xmlns: "http://www.w3.org/2000/svg",
+            viewBox: "0 0 20 20",
+            fill: "currentColor"
+          }
+        },
+        [
+          _c("path", { attrs: { d: "M10 12a2 2 0 100-4 2 2 0 000 4z" } }),
+          _vm._v(" "),
+          _c("path", {
+            attrs: {
+              "fill-rule": "evenodd",
+              d:
+                "M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z",
+              "clip-rule": "evenodd"
+            }
+          })
+        ]
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -26744,12 +26762,7 @@ var render = function() {
               ],
               staticClass: "absolute z-50 mt-2 rounded-md shadow-lg",
               class: [_vm.widthClass, _vm.alignmentClasses],
-              staticStyle: { display: "none" },
-              on: {
-                click: function($event) {
-                  _vm.open = false
-                }
-              }
+              staticStyle: { display: "none" }
             },
             [
               _c(
@@ -49461,75 +49474,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/Amiral/CloseButton.vue":
-/*!*********************************************!*\
-  !*** ./resources/js/Amiral/CloseButton.vue ***!
-  \*********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _CloseButton_vue_vue_type_template_id_0ec0c30e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CloseButton.vue?vue&type=template&id=0ec0c30e& */ "./resources/js/Amiral/CloseButton.vue?vue&type=template&id=0ec0c30e&");
-/* harmony import */ var _CloseButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CloseButton.vue?vue&type=script&lang=js& */ "./resources/js/Amiral/CloseButton.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _CloseButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _CloseButton_vue_vue_type_template_id_0ec0c30e___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _CloseButton_vue_vue_type_template_id_0ec0c30e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/Amiral/CloseButton.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/Amiral/CloseButton.vue?vue&type=script&lang=js&":
-/*!**********************************************************************!*\
-  !*** ./resources/js/Amiral/CloseButton.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./CloseButton.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Amiral/CloseButton.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/Amiral/CloseButton.vue?vue&type=template&id=0ec0c30e&":
-/*!****************************************************************************!*\
-  !*** ./resources/js/Amiral/CloseButton.vue?vue&type=template&id=0ec0c30e& ***!
-  \****************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseButton_vue_vue_type_template_id_0ec0c30e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./CloseButton.vue?vue&type=template&id=0ec0c30e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Amiral/CloseButton.vue?vue&type=template&id=0ec0c30e&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseButton_vue_vue_type_template_id_0ec0c30e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseButton_vue_vue_type_template_id_0ec0c30e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/js/Amiral/ClubInviteNotification.vue":
 /*!********************************************************!*\
   !*** ./resources/js/Amiral/ClubInviteNotification.vue ***!
@@ -49870,6 +49814,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_template_id_4260f74c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_template_id_4260f74c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Amiral/ReadButton.vue":
+/*!********************************************!*\
+  !*** ./resources/js/Amiral/ReadButton.vue ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ReadButton_vue_vue_type_template_id_3e0aeaee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReadButton.vue?vue&type=template&id=3e0aeaee& */ "./resources/js/Amiral/ReadButton.vue?vue&type=template&id=3e0aeaee&");
+/* harmony import */ var _ReadButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReadButton.vue?vue&type=script&lang=js& */ "./resources/js/Amiral/ReadButton.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ReadButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ReadButton_vue_vue_type_template_id_3e0aeaee___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ReadButton_vue_vue_type_template_id_3e0aeaee___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/Amiral/ReadButton.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/Amiral/ReadButton.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./resources/js/Amiral/ReadButton.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReadButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ReadButton.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Amiral/ReadButton.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReadButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/Amiral/ReadButton.vue?vue&type=template&id=3e0aeaee&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/Amiral/ReadButton.vue?vue&type=template&id=3e0aeaee& ***!
+  \***************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReadButton_vue_vue_type_template_id_3e0aeaee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ReadButton.vue?vue&type=template&id=3e0aeaee& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Amiral/ReadButton.vue?vue&type=template&id=3e0aeaee&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReadButton_vue_vue_type_template_id_3e0aeaee___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReadButton_vue_vue_type_template_id_3e0aeaee___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

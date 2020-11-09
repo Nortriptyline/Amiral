@@ -1,5 +1,10 @@
 <template>
-  <amiral-notification v-on:notif-read="$emit('mark-as-read')" :notification="notification">
+  <amiral-notification
+    v-on:notif-read="$emit('mark-as-read', $event)"
+    :notification="notification"
+    :unreadable="!invitationExists"
+    :action="action"
+  >
     <template #picture>
       <img
         class="w-12 h-12 rounded-full object-cover"
@@ -26,20 +31,11 @@
       </div>
 
       <div class="text-left" v-else>
-        <span class="text-gray-400 text-xs"
-          >Invitation from {{ notification.data.club.name }} has been
+        <span class="text-gray-400 text-xs">
+          Invitation from {{ notification.data.club.name }} has been
           <span class="underline">{{ status }}</span></span
         >
       </div>
-    </template>
-
-    <template #delete>
-      <amiral-close-button
-        v-if="deletable"
-        title="Delete Notification"
-        v-tippy
-        color="blue"
-      ></amiral-close-button>
     </template>
   </amiral-notification>
 </template>
@@ -47,17 +43,16 @@
 <script>
 import AmiralNotification from "@/Amiral/Notification";
 import AmiralButton from "@/Amiral/Button";
-import AmiralCloseButton from "@/Amiral/CloseButton";
 
 export default {
   components: {
     AmiralNotification,
     AmiralButton,
-    AmiralCloseButton,
   },
   props: ["notification"],
   data: function () {
     return {
+      action: null,
       acceptForm: this.$inertia.form(
         {
           _method: "PATCH",
@@ -88,16 +83,13 @@ export default {
       );
     },
 
-    deletable: function() {
-      return !this.invitationExists
-    },
-
     status: function () {
       return this.joinedClub ? "Accepted" : "Declined";
     },
   },
   methods: {
     accept() {
+      this.action = "mark-as-read";
       this.acceptForm.post(
         route("club-members.join", {
           club: this.notification.data.club.id,
@@ -106,6 +98,7 @@ export default {
       );
     },
     decline() {
+      this.action="mark-as-read";
       this.declineForm.post(
         route("club-members.delete", {
           club: this.notification.data.club.id,

@@ -63,7 +63,7 @@
                   v-for="notification in $page.user.notifications"
                   :key="notification.id"
                 >
-                  <amiral-notification-club v-on:mark-as-read="$page.user.unreadNotificationsLength--" :notification="notification" />
+                  <amiral-notification-club v-on:mark-as-read="updateCounter($event)" :notification="notification" />
                 </div>
               </template>
             </jet-dropdown>
@@ -321,6 +321,14 @@ export default {
       );
     },
 
+    updateCounter(read_at) {
+      if (read_at == null || undefined) {
+        this.$page.user.unreadNotificationsLength++
+      } else {
+        this.$page.user.unreadNotificationsLength--
+      }
+    },
+
     logout() {
       axios.post(route("logout").url()).then((response) => {
         window.location = "/";
@@ -333,6 +341,7 @@ export default {
       return window.location.pathname;
     },
   },
+
 };
 </script>
 

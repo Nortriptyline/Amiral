@@ -2,16 +2,19 @@
   <div>
     <div
       class="block flex w-full px-4 py-2 text-sm leading-5 text-gray-700 text-left cursor-pointer hover:bg-indigo-50 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out"
-      :class="background"
-      @click="markAsRead"
     >
       <slot name="picture"></slot>
       <div class="pl-5 flex flex-col">
         <div class="py-2 flex">
-          <slot name="content"></slot>
-          <form @submit.prevent="destroy()">
-            <slot name="delete"></slot>
-          </form>
+          <slot class="w-3/4" name="content"></slot>
+          <div class="w-1/4">
+            <amiral-read-button
+              :unreadable="unreadable"
+              :color="color"
+              v-on:mark-as-read="markAsRead"
+              :read="read"
+            ></amiral-read-button>
+          </div>
         </div>
 
         <slot name="actions"></slot>
@@ -22,60 +25,49 @@
 </template>
 
 <script>
-import AmiralCloseButton from "@/Amiral/CloseButton";
+import AmiralReadButton from "@/Amiral/ReadButton";
 
 export default {
   components: {
-    AmiralCloseButton,
+    AmiralReadButton,
   },
-  props: ["notification", "closable"],
+  props: ["notification", "unreadable", "action"],
   data: function () {
     return {
       notif: {},
-      deleteForm: this.$inertia.form(
-        {
-          _method: "DELETE",
-        },
-        {
-          bag: "deleteNotification",
-        }
-      ),
     };
   },
+  watch: {
+    action: function() {
+      if (this.action == "mark-as-read")
+      this.markAsRead()
+    }
+  },
   computed: {
-    background: function () {
-      return this.notif.read_at === null ? "bg-indigo-50" : "";
+    color: function () {
+      return this.read ? "indigo" : "gray";
     },
+
+    read: function () {
+      return this.notif.read_at == (null || undefined);
+    },
+
   },
   methods: {
     markAsRead: function () {
-      if (this.notif.read_at === null) {
-        axios
-          .post("/notification/" + this.notif.id + "/mark-as-read", {
-            _method: "PATCH",
-          })
-          .then((response) => {
-            this.notif = response.data.notification;
-            if (this.notif.read_at !== null) {
-              this.$emit("notif-read");
-            }
-            return this.notification;
-          });
-      }
-    },
-    destroy: function () {
-      this.deleteForm.post(
-        route(
-          "notification.delete",
-          {
-            notification: this.notif.id,
-          },
-          {
-            preserveState: true,
-            preserveScoll: true,
-          }
-        )
-      );
+      // if (this.notif.read_at === null) {
+      axios
+        .post("/notification/" + this.notif.id + "/mark-as-read", {
+          _method: "PATCH",
+        })
+        .then((response) => {
+          this.notif = response.data.notification;
+
+          this.$emit("notif-read", this.notif.read_at);
+
+          return this.notif;
+        });
+      // }
     },
   },
   created: function () {

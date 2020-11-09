@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class NotificationController extends Controller
 {
@@ -21,8 +22,14 @@ class NotificationController extends Controller
     public function mark_as_read(Request $request, $notification)
     {
         $user = Auth::user();
-        $user->unreadNotifications->where('id', $notification)->markAsRead();
-        
+        if ($user->unreadNotifications->where('id', $notification)->count() > 0) {
+            $user->unreadNotifications->where('id', $notification)->markAsRead();
+        } else {
+            $affected = DB::table('notifications')
+                ->where('id', $notification)
+                ->update(['read_at' => null]);
+        }
+
         $user->refresh();
 
         return response()->json([
