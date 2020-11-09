@@ -157,6 +157,7 @@ export default {
     return {
       confirmingRoleDeletion: false,
       showRoleUpdate: false,
+      manipulatedRole: false,
 
       deleting: false,
       form: this.$inertia.form(
@@ -191,9 +192,9 @@ export default {
       }, 250);
     },
 
-    deleteRole(role) {
+    deleteRole() {
       this.form
-        .post(route("club-roles.delete", role.id), {
+        .post(route("club-roles.delete", this.manipulatedRole), {
           preserveScroll: true,
         })
         .then((response) => {
@@ -205,6 +206,7 @@ export default {
 
     showRoleUpdateForm(role, index) {
       this.showRoleUpdate = true;
+      this.manipulatedRole = role;
       this.updateRoleForm.name = role.name;
 
       setTimeout(() => {
@@ -212,8 +214,9 @@ export default {
       }, 250);
     },
 
-    updateRole(role) {
-      this.updateRoleForm.post(route("club-roles.update", role.id), {
+    updateRole() {
+
+      this.updateRoleForm.post(route("club-roles.update", this.manipulatedRole.id), {
         preserveScroll: true,
       })
       .then((response) => {

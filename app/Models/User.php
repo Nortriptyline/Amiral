@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -58,6 +59,8 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'role',
+        'unreadNotificationsLength',
     ];
 
     /**
@@ -66,7 +69,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $with = [
-        'clubs'
+        'notifications',
+        'clubs',
+        'club_invitations',
     ];
 
     /**
@@ -74,16 +79,25 @@ class User extends Authenticatable
      */
     public function clubs()
     {
-        return $this->belongsToMany('App\Models\Club');
+        return $this->belongsToMany('App\Models\Club')
+            ->whereNotNull('confirmed_at')
+            ->withTimestamps();
+    }
+
+    public function club_invitations()
+    {
+        return $this->belongsToMany('App\Models\Club', 'club_user', 'user_id', 'club_id')
+            ->whereNull('confirmed_at')
+            ->withTimestamps();
     }
 
     public function club_role(Club $club)
     {
         $data = $club->users()
-        ->where('user_id', $this->id)
-        ->first();
-
-        return ClubRole::find($data->pivot->club_role_id);
+            ->where('user_id', $this->id)
+            ->first();
+ 
+        return $data ? ClubRole::find($data->pivot->club_role_id) : false;
     }
 
     public function hasClubRole(Club $club, $slug)
@@ -93,6 +107,22 @@ class User extends Authenticatable
 
     public function isClubAdmin(Club $club)
     {
-        return $this->club_role($club)->slug === 'admin';
+        $role = $this->club_role($club);
+        return  $role ? $role->slug === 'admin' : false;
+    }
+
+    public function getRoleAttribute()
+    {
+        $active_user = Auth::user();
+        $club = Club::find($active_user->current_club_id);
+
+        return isset($club)
+            ? $this->club_role($club)
+            : null;
+    }
+
+    public function getUnreadNotificationsLengthAttribute()
+    {
+        return $this->unreadNotifications->count();
     }
 }

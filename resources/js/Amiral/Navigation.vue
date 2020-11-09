@@ -31,6 +31,45 @@
         <!-- Settings Dropdown -->
         <div class="hidden sm:flex sm:items-center sm:ml-6">
           <div class="ml-3 relative">
+            <jet-dropdown align="right" width="80">
+              <template #trigger>
+                <button
+                  class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                >
+                  <div class="relative">
+                    <svg
+                      viewBox="0 0 16 16"
+                      class="bi bi-bell h-7 w-15"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2z" />
+                      <path
+                        fill-rule="evenodd"
+                        d="M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"
+                      />
+                    </svg>
+                    <span
+                      class="absolute top-0 rounded-full bg-red-500 uppercase w-7 h-7 p-1 text-xs text-white mr-3"
+                    >
+                      {{ $page.user.unreadNotificationsLength }}
+                    </span>
+                  </div>
+                </button>
+              </template>
+
+              <template #content>
+                <div
+                  v-for="notification in $page.user.notifications"
+                  :key="notification.id"
+                >
+                  <amiral-notification-club v-on:mark-as-read="updateCounter($event)" :notification="notification" />
+                </div>
+              </template>
+            </jet-dropdown>
+          </div>
+
+          <div class="ml-3 relative">
             <jet-dropdown align="right" width="48">
               <template #trigger>
                 <button
@@ -96,67 +135,15 @@
                 </jet-dropdown-link>
 
                 <!-- Clubs Switcher -->
-                <amiral-dropdown-title> Switch Clubs </amiral-dropdown-title>
+                <div v-if="$page.user.clubs.length > 0">
+                  <amiral-dropdown-title> Switch Clubs </amiral-dropdown-title>
 
-                <template v-for="club in $page.user.clubs">
-                  <form @submit.prevent="switchToClub(club)">
-                    <jet-dropdown-link as="button">
-                      <div class="flex items-center">
-                        <svg
-                          v-if="club.id == $page.user.current_club_id"
-                          class="mr-2 h-5 w-5 text-green-400"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                          ></path>
-                        </svg>
-                        <div>{{ club.name }}</div>
-                      </div>
-                    </jet-dropdown-link>
-                  </form>
-                </template>
-
-                <div class="border-t border-gray-100"></div>
-
-                <!-- Team Management -->
-                <template v-if="$page.jetstream.hasTeamFeatures">
-                  <div class="block px-4 py-2 text-xs text-gray-400">
-                    Manage Team
-                  </div>
-
-                  <!-- Team Settings -->
-                  <jet-dropdown-link
-                    :href="route('teams.show', $page.user.current_team)"
-                  >
-                    Team Settings
-                  </jet-dropdown-link>
-
-                  <jet-dropdown-link
-                    :href="route('teams.create')"
-                    v-if="$page.jetstream.canCreateTeams"
-                  >
-                    Create New Team
-                  </jet-dropdown-link>
-
-                  <div class="border-t border-gray-100"></div>
-
-                  <!-- Team Switcher -->
-                  <div class="block px-4 py-2 text-xs text-gray-400">
-                    Switch Teams
-                  </div>
-
-                  <template v-for="team in $page.user.all_teams">
-                    <form @submit.prevent="switchToTeam(team)">
+                  <template v-for="club in $page.user.clubs">
+                    <form @submit.prevent="switchToClub(club)" :key="club.id">
                       <jet-dropdown-link as="button">
                         <div class="flex items-center">
                           <svg
-                            v-if="team.id == $page.user.current_team_id"
+                            v-if="club.id == $page.user.current_club_id"
                             class="mr-2 h-5 w-5 text-green-400"
                             fill="none"
                             stroke-linecap="round"
@@ -169,14 +156,14 @@
                               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                             ></path>
                           </svg>
-                          <div>{{ team.name }}</div>
+                          <div>{{ club.name }}</div>
                         </div>
                       </jet-dropdown-link>
                     </form>
                   </template>
+                </div>
 
-                  <div class="border-t border-gray-100"></div>
-                </template>
+                <div class="border-t border-gray-100"></div>
 
                 <!-- Authentication -->
                 <form @submit.prevent="logout">
@@ -285,59 +272,6 @@
               Logout
             </jet-responsive-nav-link>
           </form>
-
-          <!-- Team Management -->
-          <template v-if="$page.jetstream.hasTeamFeatures">
-            <div class="border-t border-gray-200"></div>
-
-            <div class="block px-4 py-2 text-xs text-gray-400">Manage Team</div>
-
-            <!-- Team Settings -->
-            <jet-responsive-nav-link
-              :href="route('teams.show', $page.user.current_team)"
-              :active="$page.currentRouteName == 'teams.show'"
-            >
-              Team Settings
-            </jet-responsive-nav-link>
-
-            <jet-responsive-nav-link
-              :href="route('teams.create')"
-              :active="$page.currentRouteName == 'teams.create'"
-            >
-              Create New Team
-            </jet-responsive-nav-link>
-
-            <div class="border-t border-gray-200"></div>
-
-            <!-- Team Switcher -->
-            <div class="block px-4 py-2 text-xs text-gray-400">
-              Switch Teams
-            </div>
-
-            <template v-for="team in $page.user.all_teams">
-              <form @submit.prevent="switchToTeam(team)" :key="team.id">
-                <jet-responsive-nav-link as="button">
-                  <div class="flex items-center">
-                    <svg
-                      v-if="team.id == $page.user.current_team_id"
-                      class="mr-2 h-5 w-5 text-green-400"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      ></path>
-                    </svg>
-                    <div>{{ team.name }}</div>
-                  </div>
-                </jet-responsive-nav-link>
-              </form>
-            </template>
-          </template>
         </div>
       </div>
     </div>
@@ -351,7 +285,9 @@ import JetDropdown from "@/Jetstream/Dropdown";
 import JetDropdownLink from "@/Jetstream/DropdownLink";
 import JetNavLink from "@/Jetstream/NavLink";
 import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink";
+import AmiralButton from "@/Amiral/Button";
 import AmiralDropdownTitle from "@/Amiral/DropdownTitle";
+import AmiralNotificationClub from "@/Amiral/ClubInviteNotification";
 
 export default {
   components: {
@@ -362,6 +298,8 @@ export default {
     JetNavLink,
     JetResponsiveNavLink,
     AmiralDropdownTitle,
+    AmiralNotificationClub,
+    AmiralButton,
   },
 
   data() {
@@ -383,6 +321,14 @@ export default {
       );
     },
 
+    updateCounter(read_at) {
+      if (read_at == null || undefined) {
+        this.$page.user.unreadNotificationsLength++
+      } else {
+        this.$page.user.unreadNotificationsLength--
+      }
+    },
+
     logout() {
       axios.post(route("logout").url()).then((response) => {
         window.location = "/";
@@ -395,6 +341,7 @@ export default {
       return window.location.pathname;
     },
   },
+
 };
 </script>
 

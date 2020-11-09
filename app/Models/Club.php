@@ -19,7 +19,7 @@ class Club extends Model
     ];
 
     protected $with = [
-        'roles'
+        'roles',
     ];
 
     /**
@@ -27,7 +27,10 @@ class Club extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\Models\User')->withPivot('club_role_id');
+        return $this->belongsToMany('App\Models\User')
+            ->withPivot('club_role_id')
+            ->whereNotNull('club_user.confirmed_at')
+            ->withTimestamps();
     }
 
     public function roles()

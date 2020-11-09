@@ -111,4 +111,9 @@ class ClubPolicy
     {
         return $user->isClubAdmin($club);
     }
+
+    public function withdraw(User $user, Club $club)
+    {
+        return Auth::id() === $user->id || Auth::user()->isClubAdmin($club);
+    }
 }

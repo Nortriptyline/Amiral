@@ -15,12 +15,18 @@
         <create-club-role-form></create-club-role-form>
 
         <jet-section-border />
-        
+
         <manage-club-role-form
           :roles="$page.club.roles"
         ></manage-club-role-form>
         <jet-section-border />
-        <!-- <club-roles-form :availableRoles="$page.club.roles" :users="$page.users"></club-roles-form> -->
+
+        <club-members-manager
+          :availableRoles="$page.club.roles"
+          :club="$page.club"
+        ></club-members-manager>
+
+        <jet-section-border />
         <!-- <update-password-form class="mt-10 sm:mt-0" />
 
                 <div v-if="$page.jetstream.canManageTwoFactorAuthentication">
@@ -45,6 +51,7 @@ import UpdateClubInformationForm from "./UpdateClubInformationForm";
 import CreateClubRoleForm from "./CreateClubRoleForm";
 import ManageClubRoleForm from "./ManageClubRoleForm";
 import ClubRolesForm from "./ClubRolesForm";
+import ClubMembersManager from "./ClubMembersManager";
 
 export default {
   props: ["sessions"],
@@ -57,6 +64,7 @@ export default {
     CreateClubRoleForm,
     ManageClubRoleForm,
     ClubRolesForm,
+    ClubMembersManager,
   },
 };
 </script>
