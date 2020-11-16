@@ -1,13 +1,11 @@
 <template>
   <div>
-    <jet-section-border />
-
-    <!-- Add Team Member -->
+    <!-- Add Club Member -->
     <jet-form-section @submitted="addClubMember">
       <template #title> Add club Member </template>
 
       <template #description>
-        Add a new team member to your team, allowing them to collaborate with
+        Add a new club member to your club, allowing them to collaborate with
         you.
       </template>
 
@@ -115,15 +113,15 @@
     <div v-if="users.length > 0">
       <jet-section-border />
 
-      <!-- Manage Team Members -->
+      <!-- Manage Club Members -->
       <jet-action-section class="mt-10 sm:mt-0">
-        <template #title> Team Members </template>
+        <template #title> Club Members </template>
 
         <template #description>
           All of the people that are part of this club.
         </template>
 
-        <!-- Team Member List -->
+        <!-- Club Member List -->
         <template #content>
           <div class="space-y-6">
             <div
@@ -149,7 +147,7 @@
               </div>
 
               <div class="flex items-center">
-                <!-- Manage Team Member Role -->
+                <!-- Manage Club Member Role -->
                 <button
                   class="ml-2 text-sm text-gray-400 underline"
                   @click="manageRole(user)"
@@ -157,7 +155,7 @@
                   {{ roleName(user.pivot.role) }}
                 </button>
 
-                <!-- Leave Team -->
+                <!-- Leave club -->
                 <button
                   class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
                   @click="confirmLeavingClub"
@@ -166,7 +164,7 @@
                   Leave
                 </button>
 
-                <!-- Remove Team Member -->
+                <!-- Remove Club Member -->
                 <button
                   class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
                   @click="confirmClubMemberRemoval(user)"
@@ -257,12 +255,12 @@
       </template>
     </jet-dialog-modal>
 
-    <!-- Leave Team Confirmation Modal -->
+    <!-- Leave Club Confirmation Modal -->
     <jet-confirmation-modal
       :show="confirmingLeavingClub"
       @close="confirmingLeavingClub = false"
     >
-      <template #title> Leave Team </template>
+      <template #title> Leave Club </template>
 
       <template #content>
         Are you sure you would like to leave this club?
@@ -284,15 +282,15 @@
       </template>
     </jet-confirmation-modal>
 
-    <!-- Remove Team Member Confirmation Modal -->
+    <!-- Remove Club Member Confirmation Modal -->
     <jet-confirmation-modal
       :show="clubMemberBeingRemoved"
       @close="clubMemberBeingRemoved = null"
     >
-      <template #title> Remove Team Member </template>
+      <template #title> Remove Club Member </template>
 
       <template #content>
-        Are you sure you would like to remove this person from the team?
+        Are you sure you would like to remove this person from the club?
       </template>
 
       <template #footer>

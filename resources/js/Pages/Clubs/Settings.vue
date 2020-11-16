@@ -12,15 +12,6 @@
 
         <jet-section-border />
 
-        <!-- <create-club-role-form></create-club-role-form>
-
-        <jet-section-border /> -->
-
-        <!-- <manage-club-role-form
-          :roles="$page.club.roles"
-        ></manage-club-role-form>
-        <jet-section-border /> -->
-
         <club-members-manager
           :club="$page.club"
           :users="$page.users"

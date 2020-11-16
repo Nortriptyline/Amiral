@@ -25,6 +25,10 @@ class AmiralServiceProvider extends ServiceProvider
             UserRepositoryInterface::class,
             UserRepository::class
         );
+        $this->app->bind(
+            TeamRepositoryInterface::class,
+            TeamRepository::class
+        );
     }
 
     /**

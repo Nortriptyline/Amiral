@@ -5,6 +5,7 @@ use App\Http\Controllers\ClubMemberController;
 use App\Http\Controllers\ClubRoleController;
 use App\Http\Controllers\CurrentClubController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -44,6 +45,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::patch('/notifications/read', [NotificationController::class, 'read_all'])->name('notifications.read_all');
     Route::patch('/notifications/{notification}/toggle', [NotificationController::class, 'toggle'])->name('notifications.toggle');
     Route::delete('/notifications/{notification}', [NotificationController::class, 'delete'])->name('notifications.destroy');
+
+    Route::get('/teams/create', [TeamController::class, 'create'])->name('teams.create');
+    Route::get('/teams/{team}/edit', [TeamController::class, 'edit'])->name('teams.edit');
+    Route::post('/teams/store', [TeamController::class, 'store'])->name('teams.store');
 
     Route::resource('clubs', ClubController::class)->except([
         'index',

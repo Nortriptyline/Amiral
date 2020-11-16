@@ -21,6 +21,10 @@ class Club extends Model
         'owner',
     ];
 
+    protected $with = [
+        'teams'
+    ];
+
     /**
      * Many to Many club - user
      */
