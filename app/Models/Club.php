@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Club extends Model
 {
@@ -15,11 +16,9 @@ class Club extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
-    ];
-
-    protected $with = [
-        'roles'
+        'name',
+        'description',
+        'owner',
     ];
 
     /**
@@ -27,16 +26,17 @@ class Club extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\Models\User')->withPivot('club_role_id');
+        return $this->belongsToMany('App\Models\User')
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
+    // Return role names
     public function roles()
     {
-        return $this->hasMany('App\Models\ClubRole');
-    }
-
-    public function slug_exists($value)
-    {
-        return $this->roles()->where('slug', $value)->count() > 0;
+        return DB::table('club_user')
+            ->select('role as slug')
+            ->distinct()
+            ->get();
     }
 }

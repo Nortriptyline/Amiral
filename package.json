@@ -26,6 +26,9 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "slugify": "^1.4.5"
+        "animate.css": "^4.1.1",
+        "simplebar-vue": "^1.6.0",
+        "slugify": "^1.4.5",
+        "vue-tippy": "^4.7.2"
     }
 }

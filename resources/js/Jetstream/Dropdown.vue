@@ -19,7 +19,7 @@
                     class="absolute z-50 mt-2 rounded-md shadow-lg"
                     :class="[widthClass, alignmentClasses]"
                     style="display: none;"
-                    @click="open = false">
+                    >
                 <div class="rounded-md shadow-xs" :class="contentClasses">
                     <slot name="content"></slot>
                 </div>
@@ -64,9 +64,7 @@
 
         computed: {
             widthClass() {
-                return {
-                    '48': 'w-48',
-                }[this.width.toString()]
+                return 'w-' + this.width
             },
 
             alignmentClasses() {

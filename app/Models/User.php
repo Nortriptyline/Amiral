@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -58,6 +59,8 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'unreadNotificationsLength',
+        'permissions',
     ];
 
     /**
@@ -66,7 +69,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $with = [
-        'clubs'
+        'notifications',
+        'clubs',
+        'joined_clubs',
     ];
 
     /**
@@ -74,25 +79,53 @@ class User extends Authenticatable
      */
     public function clubs()
     {
-        return $this->belongsToMany('App\Models\Club');
+        return $this->belongsToMany('App\Models\Club')
+            ->withPivot('role');
     }
 
-    public function club_role(Club $club)
+    public function joined_clubs()
     {
-        $data = $club->users()
-        ->where('user_id', $this->id)
-        ->first();
-
-        return ClubRole::find($data->pivot->club_role_id);
+        return $this->clubs()
+            ->whereNotNull('confirmed_at');
     }
 
-    public function hasClubRole(Club $club, $slug)
+    public function ownClub(Club $club)
     {
-        return $this->club_role($club)->slug === $slug;
+        return $this->id == $club->owner;
+    }
+
+    public function isInClub(Club $club)
+    {
+        return $this->clubs()
+            ->where('club_id', $club->id)
+            ->first();
+    }
+
+    public function roleInClub(Club $club)
+    {
+        if ($this->isInClub($club)) {
+            return $this->clubs()->where('club_id', $club->id)->first()->pivot->role;
+        } else {
+            return false;
+        }
     }
 
     public function isClubAdmin(Club $club)
     {
-        return $this->club_role($club)->slug === 'admin';
+        return $this->roleInClub($club) == 'admin';
+    }
+
+    public function getUnreadNotificationsLengthAttribute()
+    {
+        return $this->unreadNotifications->count();
+    }
+
+    public function getPermissionsAttribute()
+    {
+        $club = $this->current_club_id ? Club::find($this->current_club_id) : null;
+
+        return [
+            'editCurrentClub' => $this->can('edit', $club),
+        ];
     }
 }

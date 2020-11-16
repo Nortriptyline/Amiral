@@ -48,6 +48,11 @@ class ClubPolicy
         return Auth::check();
     }
 
+    public function edit(User $user, Club $club)
+    {
+        return $user->isClubAdmin($club);
+    }
+
     /**
      * Determine whether the user can update the model.
      *
@@ -110,5 +115,26 @@ class ClubPolicy
     public function editRoles(User $user, Club $club)
     {
         return $user->isClubAdmin($club);
+    }
+
+    public function removeMember(User $user, Club $club, User $leaver)
+    {
+        $accept = false;
+
+        /**
+         * Owner ne peut pas quitter le club. 
+         * Le capitaine est le dernier à quitter le navire !
+         */ 
+        if ($leaver->ownClub($club)) {
+            return false;
+        }
+
+        /**
+         * Si l'utilisateur est kick leaver != user, on vérifie l'admin
+         * Si l'utilisateur leave (leaver == user), on l'autorise à partir.
+         */
+        return $leaver->id != $user->id 
+            ? $user->isClubAdmin($club)
+            : true;
     }
 }
