@@ -44,7 +44,7 @@
           v-model="form.description"
           autofocus
         ></amiral-textarea>
-        <jet-input-error :message="form.error('name')" class="mt-2" />
+        <jet-input-error :message="form.error('description')" class="mt-2" />
       </div>
     </template>
 

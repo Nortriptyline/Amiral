@@ -31,7 +31,7 @@
         <!-- Settings Dropdown -->
         <div class="hidden sm:flex sm:items-center sm:ml-6">
           <div class="ml-3 relative">
-            <jet-dropdown align="right" width="80">
+            <amiral-notifications-dropdown align="right" width="80">
               <template #trigger>
                 <button
                   class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
@@ -50,6 +50,7 @@
                       />
                     </svg>
                     <span
+                      v-if="$page.user.unreadNotificationsLength > 0"
                       class="absolute top-0 rounded-full bg-red-500 uppercase w-7 h-7 p-1 text-xs text-white mr-3"
                     >
                       {{ $page.user.unreadNotificationsLength }}
@@ -57,16 +58,7 @@
                   </div>
                 </button>
               </template>
-
-              <template #content>
-                <div
-                  v-for="notification in $page.user.notifications"
-                  :key="notification.id"
-                >
-                  <amiral-notification-club v-on:mark-as-read="updateCounter($event)" :notification="notification" />
-                </div>
-              </template>
-            </jet-dropdown>
+            </amiral-notifications-dropdown>
           </div>
 
           <div class="ml-3 relative">
@@ -124,7 +116,7 @@
                 <!-- Clubs Settings -->
 
                 <jet-dropdown-link
-                  v-if="$page.user.current_club_id"
+                  v-if="$page.user.permissions.editCurrentClub"
                   :href="route('clubs.edit', $page.user.current_club_id)"
                 >
                   Club Settings
@@ -135,10 +127,10 @@
                 </jet-dropdown-link>
 
                 <!-- Clubs Switcher -->
-                <div v-if="$page.user.clubs.length > 0">
+                <div v-if="$page.user.joined_clubs.length > 0">
                   <amiral-dropdown-title> Switch Clubs </amiral-dropdown-title>
 
-                  <template v-for="club in $page.user.clubs">
+                  <template v-for="club in $page.user.joined_clubs">
                     <form @submit.prevent="switchToClub(club)" :key="club.id">
                       <jet-dropdown-link as="button">
                         <div class="flex items-center">
@@ -287,7 +279,7 @@ import JetNavLink from "@/Jetstream/NavLink";
 import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink";
 import AmiralButton from "@/Amiral/Button";
 import AmiralDropdownTitle from "@/Amiral/DropdownTitle";
-import AmiralNotificationClub from "@/Amiral/ClubInviteNotification";
+import AmiralNotificationsDropdown from "@/Amiral/NotificationsDropdown";
 
 export default {
   components: {
@@ -298,8 +290,8 @@ export default {
     JetNavLink,
     JetResponsiveNavLink,
     AmiralDropdownTitle,
-    AmiralNotificationClub,
     AmiralButton,
+    AmiralNotificationsDropdown
   },
 
   data() {
@@ -321,14 +313,6 @@ export default {
       );
     },
 
-    updateCounter(read_at) {
-      if (read_at == null || undefined) {
-        this.$page.user.unreadNotificationsLength++
-      } else {
-        this.$page.user.unreadNotificationsLength--
-      }
-    },
-
     logout() {
       axios.post(route("logout").url()).then((response) => {
         window.location = "/";
@@ -341,7 +325,6 @@ export default {
       return window.location.pathname;
     },
   },
-
 };
 </script>
 

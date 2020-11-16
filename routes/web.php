@@ -41,8 +41,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::patch('/club/{club}/user/{user}/join', [ClubMemberController::class, 'join'])->name('club-members.join');    
     Route::delete('/club/{club}/user/{user}', [ClubMemberController::class, 'delete'])->name('club-members.destroy');
 
-    Route::patch('/notification/{notification}/toggle', [NotificationController::class, 'toggle'])->name('notifications.toggle');
-    Route::delete('/notifications/{notification}', [NotificationController::class, 'delete'])->name('notification.delete');
+    Route::patch('/notifications/read', [NotificationController::class, 'read_all'])->name('notifications.read_all');
+    Route::patch('/notifications/{notification}/toggle', [NotificationController::class, 'toggle'])->name('notifications.toggle');
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'delete'])->name('notifications.destroy');
 
     Route::resource('clubs', ClubController::class)->except([
         'index',

@@ -50,7 +50,7 @@ class ClubPolicy
 
     public function edit(User $user, Club $club)
     {
-        return $user->clubs()->where('club_id', $club->id)->first();
+        return $user->isClubAdmin($club);
     }
 
     /**
@@ -117,8 +117,24 @@ class ClubPolicy
         return $user->isClubAdmin($club);
     }
 
-    public function withdraw(User $user, Club $club)
+    public function removeMember(User $user, Club $club, User $leaver)
     {
-        return Auth::id() === $user->id || Auth::user()->isClubAdmin($club);
+        $accept = false;
+
+        /**
+         * Owner ne peut pas quitter le club. 
+         * Le capitaine est le dernier à quitter le navire !
+         */ 
+        if ($leaver->ownClub($club)) {
+            return false;
+        }
+
+        /**
+         * Si l'utilisateur est kick leaver != user, on vérifie l'admin
+         * Si l'utilisateur leave (leaver == user), on l'autorise à partir.
+         */
+        return $leaver->id != $user->id 
+            ? $user->isClubAdmin($club)
+            : true;
     }
 }

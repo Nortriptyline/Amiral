@@ -9,7 +9,6 @@ use App\Models\Club;
 use App\Models\ClubRole;
 use App\Models\User;
 use App\Notifications\UserInvitedToClub;
-use App\Rules\ExistsInClub;
 use App\Rules\UniqueInClub;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,7 +32,7 @@ class ClubRepository implements ClubRepositoryInterface
         if ($user->can('create', Club::class)) {
             Validator::make($input, [
                 'name' => ['required', 'string', 'max:255'],
-                'description' => ['string', 'max:65,535'],
+                'description' => ['nullable', 'string', 'max:65,535'],
             ])->validateWithBag('createClub');
 
             $club = Club::create([
@@ -93,7 +92,7 @@ class ClubRepository implements ClubRepositoryInterface
         $user->notify(new UserInvitedToClub([
             'user' => ['id' => $user->id, 'name' => $user->name, 'role' => $role],
             'club' => ['id' => $club->id, 'name' => $club->name],
-            'status' => 'pending'
+            'status' => 'PENDING'
         ]));
 
         return $club;
@@ -103,17 +102,22 @@ class ClubRepository implements ClubRepositoryInterface
     {
         $club->users()->updateExistingPivot($user, ['confirmed_at' => now()]);
 
-        if (!$user->current_club_id) {
-            $this->users->switchCurrentClub($user, $club);
-        }
+        $this->users->switchCurrentClub($user, $club);
 
         return $club;
     }
 
-    public function withdraw(Club $club, User $user)
+    public function withdraw(Club $club, User $leaver)
     {
-        if ($user->can('withdraw', $club)) {
-            $club->users()->detach($user->id);
+        $user = Auth::user();
+
+        if ($user->can('remove-member', [$club, $leaver])) {
+            $club->users()->detach($leaver->id);
+            if ($leaver->current_club_id == $club->id) {
+                $this->users->switchDefaultCurrentClub($leaver);
+            }
         }
     }
+
+
 }

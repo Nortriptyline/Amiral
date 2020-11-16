@@ -29,15 +29,12 @@ class ClubMemberController extends Controller
     {
         $this->clubs->confirmInvitation($club, $user);
 
-        return back();
+        return redirect(config('fortify.home'), 303);
     }
 
     public function delete(Request $request, Club $club, User $user)
     {
         $this->clubs->withdraw($club, $user);
-        return redirect()->action(
-            [ClubController::class, 'edit'],
-            ['club' => $club->id]
-        );
+        return back();
     }
 }

@@ -16,6 +16,7 @@ class ClubController extends Controller
     {
         $this->clubs = $clubs;
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -57,10 +58,14 @@ class ClubController extends Controller
      */
     public function edit(Request $request, Club $club)
     {
-        return Inertia::render('Clubs/Settings', [
-            'club' => $club,
-            'users' => $club->users,
-        ]);
+        if ($request->user()->can('edit', $club)) {
+            return Inertia::render('Clubs/Settings', [
+                'club' => $club,
+                'users' => $club->users,
+            ]);
+        } else {
+            return redirect()->route('dashboard');
+        }
     }
 
     /**

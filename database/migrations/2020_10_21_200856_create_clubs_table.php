@@ -17,7 +17,7 @@ class CreateClubsTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->foreignId('owner')->constrained('users');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

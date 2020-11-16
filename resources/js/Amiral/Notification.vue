@@ -9,9 +9,9 @@
           <slot class="w-3/4" name="content"></slot>
           <div class="w-1/4">
             <amiral-read-button
-              :color="color"
-              :read="read"
-              :notification="notif"
+              v-on:toggle-notification="toggleNotification"
+              :lock="lock"
+              :notification="notification"
             ></amiral-read-button>
           </div>
         </div>
@@ -30,38 +30,72 @@ export default {
   components: {
     AmiralReadButton,
   },
-  props: ["notification"],
+  props: ["notification", "lock"],
   data: function () {
     return {
-      notif: {},
+      toggleReadForm: this.$inertia.form(
+        {
+          _method: "PATCH",
+          markAsRead: !this.read,
+          datas: this.notification.data,
+        },
+        {
+          bag: "toggleReadNotification",
+        }
+      ),
+      deleteForm: this.$inertia.form(
+        {
+          _method: "DELETE",
+        },
+        {
+          bag: "deleteNotification",
+        }
+      ),
     };
   },
   computed: {
-    color: function () {
-      return this.read ? "indigo" : "gray";
-    },
-
     read: function () {
-      return this.notif.read_at == (null || undefined);
+      return this.notification.read_at != null;
     },
   },
   methods: {
-    // markAsRead: function () {
-    //   // if (this.notif.read_at === null) {
-    //   axios
-    //     .post("/notification/" + this.notif.id + "/mark-as-read", {
-    //       _method: "PATCH",
-    //     })
-    //     .then((response) => {
-    //       this.notif = response.data.notification;
-    //       this.$emit("notif-read", this.notif.read_at);
-    //       return this.notif;
-    //     });
-    //   // }
-    // },
-  },
-  created: function () {
-    this.notif = this.notification;
+    toggleNotification(options, callback) {
+      if (!this.lock) {
+        if (options != null && options != undefined) {
+          this.toggleReadForm.markAsRead = options.markAsRead;
+          this.toggleReadForm.datas = Object.assign(
+            this.notification.data,
+            options.datas
+          );
+        } else {
+          this.toggleReadForm.markAsRead = !this.notification.read_at;
+
+          // testing to delete
+          this.toggleReadForm.datas = this.toggleReadForm.datas;
+          this.toggleReadForm.datas.status = "PENDING";
+        }
+
+        this.toggleReadForm
+          .post(
+            route("notifications.toggle", {
+              notification: this.notification.id,
+            })
+          )
+          .then(() => {
+            if (typeof callback === "function") {
+              callback();
+            }
+          });
+      }
+    },
+
+    deleteNotification() {
+      this.deleteForm.post(
+        route("notifications.destroy", {
+          notification: this.notification.id,
+        })
+      );
+    },
   },
 };
 </script>

@@ -137,7 +137,15 @@
                   :src="user.profile_photo_url"
                   :alt="user.name"
                 />
-                <div class="ml-4">{{ user.name }}</div>
+                <div class="ml-4">
+                  {{ user.name }}
+                  <span
+                    v-if="!joinedCurrentClub(user) && inClub(user)"
+                    class="text-sm text-gray-400"
+                  >
+                    - Pending Confirmation</span
+                  >
+                </div>
               </div>
 
               <div class="flex items-center">
@@ -162,6 +170,7 @@
                 <button
                   class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
                   @click="confirmClubMemberRemoval(user)"
+                  v-if="joinedCurrentClub(user) && $page.user.id !== user.id"
                 >
                   Remove
                 </button>
@@ -267,8 +276,8 @@
         <jet-danger-button
           class="ml-2"
           @click.native="leaveClub"
-          :class="{ 'opacity-25': leaveClubForm.processing }"
-          :disabled="leaveClubForm.processing"
+          :class="{ 'opacity-25': removeClubMemberForm.processing }"
+          :disabled="removeClubMemberForm.processing"
         >
           Leave
         </jet-danger-button>
@@ -373,18 +382,9 @@ export default {
         }
       ),
 
-      leaveClubForm: this.$inertia.form(
-        {
-          _method: "_DELETE",
-        },
-        {
-          bag: "leaveClub",
-        }
-      ),
-
       removeClubMemberForm: this.$inertia.form(
         {
-          _method: "_DELETE",
+          _method: "DELETE",
         },
         {
           bag: "removeClubMember",
@@ -426,7 +426,7 @@ export default {
     },
 
     leaveClub() {
-      this.leaveClubForm.delete(
+      this.removeClubMemberForm.post(
         route("club-members.destroy", [this.club, this.$page.user]),
         {
           preserveScroll: true,
@@ -439,20 +439,32 @@ export default {
     },
 
     removeClubMember() {
-      this.removeClubMemberForm.delete(
-        route("club-members.destroy", {
-          club: this.club,
-          user: this.clubMemberBeingRemoved,
-        }),
-        {
-          preserveScroll: true,
-        }
-      );
+      this.removeClubMemberForm
+        .post(
+          route("club-members.destroy", {
+            club: this.club,
+            user: this.clubMemberBeingRemoved,
+          }),
+          {
+            preserveScroll: true,
+          }
+        )
+        .then(() => {
+          this.clubMemberBeingRemoved = false;
+        });
     },
 
     roleName: function (slug) {
       return this.availableRoles.find((s) => s.slug == slug).name;
     },
+
+    joinedCurrentClub: function (user) {
+      return user.joined_clubs.find((c) => c.id == this.club.id);
+    },
+
+    inClub: function(user) {
+      return user.clubs.find((c) => c.id == this.club.id);
+    }
   },
 };
 </script>

@@ -26,7 +26,9 @@ class Club extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\Models\User')->withPivot('role');
+        return $this->belongsToMany('App\Models\User')
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
     // Return role names

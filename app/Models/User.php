@@ -60,6 +60,7 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
         'unreadNotificationsLength',
+        'permissions',
     ];
 
     /**
@@ -70,6 +71,7 @@ class User extends Authenticatable
     protected $with = [
         'notifications',
         'clubs',
+        'joined_clubs',
     ];
 
     /**
@@ -77,12 +79,35 @@ class User extends Authenticatable
      */
     public function clubs()
     {
-        return $this->belongsToMany('App\Models\Club')->withPivot('role');
+        return $this->belongsToMany('App\Models\Club')
+            ->withPivot('role');
+    }
+
+    public function joined_clubs()
+    {
+        return $this->clubs()
+            ->whereNotNull('confirmed_at');
+    }
+
+    public function ownClub(Club $club)
+    {
+        return $this->id == $club->owner;
+    }
+
+    public function isInClub(Club $club)
+    {
+        return $this->clubs()
+            ->where('club_id', $club->id)
+            ->first();
     }
 
     public function roleInClub(Club $club)
     {
-        return $this->clubs()->where('club_id', $club->id)->first()->pivot->role;
+        if ($this->isInClub($club)) {
+            return $this->clubs()->where('club_id', $club->id)->first()->pivot->role;
+        } else {
+            return false;
+        }
     }
 
     public function isClubAdmin(Club $club)
@@ -93,5 +118,14 @@ class User extends Authenticatable
     public function getUnreadNotificationsLengthAttribute()
     {
         return $this->unreadNotifications->count();
+    }
+
+    public function getPermissionsAttribute()
+    {
+        $club = $this->current_club_id ? Club::find($this->current_club_id) : null;
+
+        return [
+            'editCurrentClub' => $this->can('edit', $club),
+        ];
     }
 }

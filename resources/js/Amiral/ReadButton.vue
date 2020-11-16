@@ -1,15 +1,14 @@
 <template>
-  <form>
+  <form @submit.prevent="$emit('toggle-notification')">
     <button
-      type="submit"
       class="self-start items-center pl-3 font-semibold text-xs uppercase tracking-widest focus:outline-none transition ease-in-out duration-150"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
-        class="h-4 w-4 transform transition ease-in-out duration-300"
-        :class="[colorClass, rotate]"
+        class="relative z-10 h-4 w-4 transform transition ease-in-out duration-300"
+        :class="[colorClass, rotateClass]"
       >
         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
         <path
@@ -24,50 +23,31 @@
 
 <script>
 export default {
-  props: {
-    notification: {},
-    read: {
-      default: false,
-    },
-    color: {
-      default: "gray",
-    },
-  },
+  props: ["notification", "color", "lock"],
   data: function () {
     return {
       rotate: 0,
-      depths: {
-        text: 700,
-        hover_text: 400,
-        active_text: 900,
-      },
-      toggleReadForm: this.$inertia.form(
-        {
-          read: !this.read,
-        },
-        {
-          bag: "toggleReadNotification",
-        }
-      ),
     };
   },
   computed: {
     colorClass: function () {
       return (
         "text-" +
-        this.color +
+        this.textColor +
         "-" +
         this.textDepth +
         " hover:text-" +
-        this.color +
+        this.textColor +
         "-" +
-        this.depths.hover_text +
-        " focus:text-" +
-        this.color +
-        "-" +
-        this.depths.active_text +
+        this.textHover +
         " "
       );
+    },
+    rotateClass: function () {
+      return "rotate-" + this.angle
+    },
+    textColor: function() {
+      return this.color != null ? this.color : this.read ? "indigo" : "gray";
     },
     angle: function () {
       return this.read ? "180" : "0";
@@ -75,25 +55,15 @@ export default {
     textDepth: function () {
       return this.read ? "700" : "400";
     },
-    hoverText: function () {
-      return this.read ? "400" : "700";
+    textHover: function () {
+      return this.lock ? "400" : this.read ? "400" : "700";
     },
+    read: function() {
+      return !this.notification.read_at;
+    }
   },
   methods: {
-    markAsRead: function () {
-      this.rotate = this.read ? "rotate-180" : "rotate-0";
-    },
-    toggleNotification() {
-      this.form.post(
-        route("notifications.toggle", {
-          notification: this.notification.id,
-        }),
-        {
-          preserveScroll: true,
-          preserveStatus: true,
-        }
-      );
-    },
+
   },
 };
 </script>

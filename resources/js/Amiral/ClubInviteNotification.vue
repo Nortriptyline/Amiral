@@ -1,5 +1,9 @@
 <template>
-  <amiral-notification :notification="notification">
+  <amiral-notification
+    ref="notification"
+    :lock="lock"
+    :notification="notification"
+  >
     <template #picture>
       <img
         class="w-12 h-12 rounded-full object-cover"
@@ -9,11 +13,11 @@
     </template>
     <template #content>
       You've been invited to join
-      {{ notification.data.club.name }} as a
+      {{ notification.data.club.name }}
     </template>
 
     <template #actions>
-      <div v-if="notification.data.status == 'pending'" class="flex">
+      <div v-if="notification.data.status == 'PENDING'" class="flex">
         <form @submit.prevent="accept">
           <amiral-button type="submit" color="indigo">
             Join Club
@@ -26,9 +30,13 @@
 
       <div class="text-left" v-else>
         <span class="text-gray-400 text-xs">
-          Invitation from {{ notification.data.club.name }} has been
-          <span class="underline">{{ notification.data.status }}</span></span
-        >
+          <span v-if="notification.data.status == 'ACCEPTED'">
+            Invitation has been <span class="underline">Accepted</span>
+          </span>
+          <span v-if="notification.data.status == 'DECLINED'">
+            Invitation has been <span class="underline">Declined</span>
+          </span>
+        </span>
       </div>
     </template>
   </amiral-notification>
@@ -64,21 +72,46 @@ export default {
       ),
     };
   },
+  computed: {
+    lock: function () {
+      return this.notification.data.status != "PENDING";
+    },
+  },
   methods: {
     accept() {
-      this.acceptForm.post(
-        route("club-members.join", {
-          club: this.notification.data.club.id,
-          user: this.$page.user.id,
-        })
+      this.$refs.notification.toggleNotification(
+        {
+          markAsRead: true,
+          datas: {
+            status: "ACCEPTED",
+          },
+        },
+        () => {
+          this.acceptForm.post(
+            route("club-members.join", {
+              club: this.notification.data.club.id,
+              user: this.$page.user.id,
+            })
+          );
+        }
       );
     },
     decline() {
-      this.declineForm.post(
-        route("club-members.destroy", {
-          club: this.notification.data.club.id,
-          user: this.$page.user.id,
-        })
+      this.$refs.notification.toggleNotification(
+        {
+          markAsRead: true,
+          datas: {
+            status: "DECLINED",
+          },
+        },
+        () => {
+          this.declineForm.post(
+            route("club-members.destroy", {
+              club: this.notification.data.club.id,
+              user: this.$page.user.id,
+            })
+          );
+        }
       );
     },
   },
