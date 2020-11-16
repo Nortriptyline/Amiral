@@ -31,6 +31,11 @@ class Club extends Model
             ->withTimestamps();
     }
 
+    public function teams()
+    {
+        return $this->hasMany('App\Models\Team');
+    }
+
     // Return role names
     public function roles()
     {
