@@ -19,12 +19,6 @@
             >
               Dashboard
             </jet-nav-link>
-            <jet-nav-link
-              :href="route('clubs')"
-              :active="$page.currentRouteName == 'clubs'"
-            >
-              Clubs
-            </jet-nav-link>
           </div>
         </div>
 
