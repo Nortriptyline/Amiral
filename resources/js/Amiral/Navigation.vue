@@ -106,7 +106,24 @@
                   API Tokens
                 </jet-dropdown-link>
 
-                <amiral-dropdown-title> Manage clubs </amiral-dropdown-title>
+                <!-- Teams Management -->
+                <amiral-dropdown-title> Club Teams </amiral-dropdown-title>
+
+                <div v-if="$page.user.current_club">
+                  <jet-dropdown-link
+                    v-for="team in $page.user.current_club.teams"
+                    :key="team.id"
+                    :href="route('teams.edit', {'team': team.id})"
+                  >
+                    {{ team.name }}
+                  </jet-dropdown-link>
+                </div>
+
+                <jet-dropdown-link :href="route('teams.create')">
+                  Create New Team
+                </jet-dropdown-link>
+
+                <amiral-dropdown-title> Manage club </amiral-dropdown-title>
                 <!-- Clubs Settings -->
 
                 <jet-dropdown-link
@@ -274,6 +291,8 @@ import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink";
 import AmiralButton from "@/Amiral/Button";
 import AmiralDropdownTitle from "@/Amiral/DropdownTitle";
 import AmiralNotificationsDropdown from "@/Amiral/NotificationsDropdown";
+import DropdownTitle from "./DropdownTitle.vue";
+import DropdownLink from "../Jetstream/DropdownLink.vue";
 
 export default {
   components: {
@@ -285,7 +304,9 @@ export default {
     JetResponsiveNavLink,
     AmiralDropdownTitle,
     AmiralButton,
-    AmiralNotificationsDropdown
+    AmiralNotificationsDropdown,
+    DropdownTitle,
+    DropdownLink,
   },
 
   data() {

@@ -1,31 +1,10 @@
 <template>
-  <jet-form-section @submitted="createClub">
-    <template #title> Club Details </template>
-
-    <template #description>
-      Create a new club to collaborate with others on projects.
-    </template>
+  <jet-form-section @submitted="createTeam">
+    <template #description> Create a new Team to manage your players </template>
 
     <template #form>
-      <div class="col-span-6">
-        <jet-label value="Club Owner" />
-
-        <div class="flex items-center mt-2">
-          <img
-            class="w-12 h-12 rounded-full object-cover"
-            :src="$page.user.profile_photo_url"
-            :alt="$page.user.name"
-          />
-
-          <div class="ml-4 leading-tight">
-            <div>{{ $page.user.name }}</div>
-            <div class="text-gray-700 text-sm">{{ $page.user.email }}</div>
-          </div>
-        </div>
-      </div>
-
       <div class="col-span-6 sm:col-span-4">
-        <jet-label for="name" value="Club Name" />
+        <jet-label for="name" value="Team Name" />
         <jet-input
           id="name"
           type="text"
@@ -41,8 +20,8 @@
         <amiral-textarea
           id="description"
           class="mt-1 block w-full"
-          v-model="form.description"></amiral-textarea>
-        <jet-input-error :message="form.error('description')" class="mt-2" />
+          v-model="form.description"
+        ></amiral-textarea>
       </div>
     </template>
 
@@ -80,16 +59,15 @@ export default {
     JetLabel,
     AmiralTextarea,
   },
-
   data() {
     return {
       form: this.$inertia.form(
         {
-          name: "",
-          description: "",
+          name: this.team.name,
+          description: this.team.description,
         },
         {
-          bag: "createClub",
+          bag: "updateTeam",
           resetOnSuccess: false,
         }
       ),
@@ -97,11 +75,13 @@ export default {
   },
 
   methods: {
-    createClub() {
-      this.form.post(route("clubs.store"), {
+    createTeam() {
+      this.form.post(route("teams.update"), {
         preserveScroll: true,
       });
     },
   },
 };
 </script>
+<style>
+</style>

@@ -21,6 +21,10 @@ class Club extends Model
         'owner',
     ];
 
+    protected $with = [
+        'teams'
+    ];
+
     /**
      * Many to Many club - user
      */
@@ -29,6 +33,11 @@ class Club extends Model
         return $this->belongsToMany('App\Models\User')
             ->withPivot('role')
             ->withTimestamps();
+    }
+
+    public function teams()
+    {
+        return $this->hasMany('App\Models\Team');
     }
 
     // Return role names

@@ -61,6 +61,7 @@ class User extends Authenticatable
         'profile_photo_url',
         'unreadNotificationsLength',
         'permissions',
+        'current_club',
     ];
 
     /**
@@ -113,6 +114,11 @@ class User extends Authenticatable
     public function isClubAdmin(Club $club)
     {
         return $this->roleInClub($club) == 'admin';
+    }
+
+    public function getCurrentClubAttribute()
+    {
+        return Club::find($this->current_club_id);
     }
 
     public function getUnreadNotificationsLengthAttribute()
