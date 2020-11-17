@@ -36,4 +36,11 @@ class TeamController extends Controller
             'team' => $team
         ]);
     }
+
+    public function update(Request $request, Team $team)
+    {
+        $this->teams->update($team, $request->all());
+
+        return back();
+    }
 }

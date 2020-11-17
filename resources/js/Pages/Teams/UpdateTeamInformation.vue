@@ -66,6 +66,7 @@ export default {
         {
           name: this.team.name,
           description: this.team.description,
+          _method: "PUT",
         },
         {
           bag: "updateTeam",
@@ -77,7 +78,7 @@ export default {
 
   methods: {
     createTeam() {
-      this.form.post(route("teams.update"), {
+      this.form.post(route("teams.update", {team: this.team.id}), {
         preserveScroll: true,
       });
     },

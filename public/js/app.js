@@ -6998,7 +6998,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       form: this.$inertia.form({
         name: this.team.name,
-        description: this.team.description
+        description: this.team.description,
+        _method: "PUT"
       }, {
         bag: "updateTeam",
         resetOnSuccess: false
@@ -7007,7 +7008,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     createTeam: function createTeam() {
-      this.form.post(route("teams.update"), {
+      this.form.post(route("teams.update", {
+        team: this.team.id
+      }), {
         preserveScroll: true
       });
     }

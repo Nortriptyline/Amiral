@@ -39,16 +39,21 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('/club/information', [CurrentClubController::class, 'update_informations'])->name('club-information.update');
 
     Route::post('/club/{club}/members', [ClubMemberController::class, 'store'])->name('club-members.store');
-    Route::patch('/club/{club}/user/{user}/join', [ClubMemberController::class, 'join'])->name('club-members.join');    
+    Route::patch('/club/{club}/user/{user}/join', [ClubMemberController::class, 'join'])->name('club-members.join');
     Route::delete('/club/{club}/user/{user}', [ClubMemberController::class, 'delete'])->name('club-members.destroy');
 
     Route::patch('/notifications/read', [NotificationController::class, 'read_all'])->name('notifications.read_all');
     Route::patch('/notifications/{notification}/toggle', [NotificationController::class, 'toggle'])->name('notifications.toggle');
     Route::delete('/notifications/{notification}', [NotificationController::class, 'delete'])->name('notifications.destroy');
 
-    Route::get('/teams/create', [TeamController::class, 'create'])->name('teams.create');
-    Route::get('/teams/{team}/edit', [TeamController::class, 'edit'])->name('teams.edit');
-    Route::post('/teams/store', [TeamController::class, 'store'])->name('teams.store');
+    // Route::get('/teams/create', [TeamController::class, 'create'])->name('teams.create');
+    // Route::get('/teams/{team}/edit', [TeamController::class, 'edit'])->name('teams.edit');
+    // Route::post('/teams/store', [TeamController::class, 'store'])->name('teams.store');
+    // Route::put('/teams/{team}', [TeamController::class, 'udpate'])->name('teams.update');
+
+    Route::resource('teams', TeamController::class)->except([
+        'index', 'destroy', 'show'
+    ]);
 
     Route::resource('clubs', ClubController::class)->except([
         'index',
